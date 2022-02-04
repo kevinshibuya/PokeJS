@@ -1,8 +1,8 @@
 import { PokemonData } from "../../types/global";
-import { Container } from "./styles";
+import { Container, Types } from "./styles";
 
 interface CardsProps {
-  pokemonData: PokemonData;
+  pokemonData: PokemonData["data"];
 }
 
 export function Cards({pokemonData}: CardsProps) {
@@ -20,7 +20,7 @@ export function Cards({pokemonData}: CardsProps) {
       <div className="types">
         {pokemonData.types.map(type => {
           return (
-            <div key={type.type.name} className={`type ` + type.type.name }>{type.type.name.toUpperCase()}</div>
+            <Types key={type.type.name} className={`type ` + type.type.name } type={type.type.name}>{type.type.name.toUpperCase()}</Types>
           )
         })}
       </div>

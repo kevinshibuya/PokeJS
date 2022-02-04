@@ -45,14 +45,18 @@ export const Container = styled.div`
 
   div.types {
     display: flex;
-
-    div.type {
-      padding: 0.5rem;
-      margin: 0.4rem;
-      background: #A9BBCD;
-      color: #011030;
-      font-weight: 700;
-      border-radius: 8px;
-    }
   }
+`
+
+interface TypesProps {
+  type: string;
+}
+
+export const Types = styled.div<TypesProps>`
+  padding: 0.5rem;
+  margin: 0.4rem;
+  background: ${(props) => `var(--${props.type})`};
+  color: ${(props) => `var(--${props.type}-text)`};
+  font-weight: 800;
+  border-radius: 8px;
 `
