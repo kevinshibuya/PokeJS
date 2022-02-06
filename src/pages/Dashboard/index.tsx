@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 
 import { Cards } from "../../components/Cards";
 import { LoadingIndicator } from '../../components/LoadingIndicator';
+import { PaginationNumbers } from '../../components/PaginationNumbers';
+import { usePagination } from "../../hooks/usePagination";
 import { api } from "../../services/api";
 import { PokemonData } from "../../types/global";
 
@@ -16,22 +18,22 @@ interface PaginationData {
 
 interface GetAmountData {
   amount: number;
-  oldAmount: number;
+  limit: number;
 }
 
 
 export function Dashboard() {
   const [data, setData] = useState<PokemonData[]>([]);
-  const [paginationData, setPaginationData] = useState<PaginationData>();
+  const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
   const [getAmount, setGetAmount] = useState<GetAmountData>({
-    amount: 20,
-    oldAmount: 1
+    amount: 0,
+    limit: 21
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, setIsLoading, pageNumbers, setPageNumbers } = usePagination();
 
   useEffect(() => {
     async function fetchData() {
-      const data: PaginationData = await api.get('/pokemon/')
+      const data: PaginationData = await api.get(`/pokemon/?offset=${getAmount.amount}&limit=${getAmount.limit}`)
         .then(data => data.data)
 
       setPaginationData({
@@ -41,15 +43,17 @@ export function Dashboard() {
         results: data.results
       });
 
+      console.log(data);
       return data;
     }
 
     fetchData()
 
     async function fetchPokeDetails() {
-      let data: PokemonData[] = [];
-      for (let i = getAmount.oldAmount; i <= getAmount.amount; i++) {
-        data.push(await api.get(`/pokemon/${i}`)
+      const paginationDataNow: PaginationData = await fetchData();
+      let pokemonData: PokemonData[] = [];
+      for (let i = 0; i < getAmount.limit; i++) {
+        pokemonData.push(await api.get(paginationDataNow.results[i].url)
           .then(data => {
             return {
               isLoading: false,
@@ -58,26 +62,54 @@ export function Dashboard() {
           }))
       }
 
-      setIsLoading(data[0].isLoading);
-      setData(data);
-      return data;
+      setIsLoading(pokemonData[0].isLoading);
+      setData(pokemonData);
+      return pokemonData;
     }
 
     fetchPokeDetails();
-  }, [getAmount]);
+  }, [getAmount, setIsLoading]);
 
   function changePage(direction: string) {
     if (direction === 'next') {
       setIsLoading(true);
       setGetAmount({
-        amount: getAmount.amount + 20,
-        oldAmount: getAmount.oldAmount + 20
+        amount: getAmount.amount + 21,
+        limit: 21
       });
-    } else if (direction === 'prev' && getAmount.amount >= 40) {
+      setPageNumbers({
+        first: pageNumbers.first + 1,
+        last: pageNumbers.last + 1
+      });
+    } else if (direction === 'prev' && getAmount.amount >= 21) {
       setIsLoading(true);
       setGetAmount({
-        amount: getAmount.amount - 20,
-        oldAmount: getAmount.oldAmount - 20
+        amount: getAmount.amount - 21,
+        limit: 21
+      });
+      setPageNumbers({
+        first: pageNumbers.first + -1,
+        last: pageNumbers.last + -1
+      });
+    } else if (direction === 'last') {
+      setIsLoading(true);
+      setGetAmount({
+        amount: (Math.floor(paginationData.count / 21)) * 21,
+        limit: paginationData.count - (Math.floor(paginationData.count / 21)) * 21
+      });
+      setPageNumbers({
+        first: Math.floor(paginationData.count / 21),
+        last: 5
+      });
+    } else if (direction === 'first') {
+      setIsLoading(true);
+      setGetAmount({
+        amount: 0,
+        limit: 21
+      });
+      setPageNumbers({
+        first: 1,
+        last: 5
       });
     }
   }
@@ -91,8 +123,7 @@ export function Dashboard() {
           )
         })}
       </div>
-      <button onClick={() => changePage('prev')}>previous</button>
-      <button onClick={() => changePage('next')}>next</button>
+      <PaginationNumbers changePageFunction={changePage} count={paginationData.count} amount={{getAmount, setGetAmount}} />
     </Container>
   )
 }

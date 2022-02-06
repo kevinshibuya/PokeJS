@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.button`
   min-width: 300px;
-  width: 90%;
+  width: 100%;
   padding: 1rem;
+  border: 0px;
   border-radius: 20px;
   margin: auto;
   background: #FFF;
@@ -14,6 +15,11 @@ export const Container = styled.div`
   justify-content: center;
   -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
   box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
+  transition: background 0.2s ease-in;
+
+  &:hover {
+      background: #f2f2f2;
+  }
 
   div.img {
     width: 4rem;
@@ -31,7 +37,7 @@ export const Container = styled.div`
     margin-top: 1.5rem;
     font-size: 1rem;
     font-weight: 800;
-    color: #758A97;
+    color: #8c8c8c;
   }
 
   h1.name {

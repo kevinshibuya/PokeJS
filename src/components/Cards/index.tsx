@@ -9,7 +9,7 @@ export function Cards({pokemonData}: CardsProps) {
   return (
     <Container>
       <div className="img">
-        <img src={pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default} alt={pokemonData.name} />
+        <img src={pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default ? pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default : pokemonData.sprites.front_default} alt={pokemonData.name} />
       </div>
       <h1 className="id">
         Nº{pokemonData.id}
