@@ -1,12 +1,13 @@
-import { Dashboard } from "./pages/Dashboard";
+import { Pokedex } from "./pages/Pokedex";
 import { GlobalStyle } from "./styles/global";
-import { PaginationProvider } from "./hooks/usePagination";
+import { PokedexProvider } from "./hooks/usePokedex";
+import { Header } from "./components/Header";
 
 export function App() {
   return (
-    <PaginationProvider>
-      <Dashboard />
+    <PokedexProvider>
+      <Header />
       <GlobalStyle />
-    </PaginationProvider>
+    </PokedexProvider>
   );
 }

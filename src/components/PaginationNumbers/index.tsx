@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usePagination } from "../../hooks/usePagination";
+import { usePokedex } from "../../hooks/usePokedex";
 import { Container, PageButton } from "./styles"
 
 type GetAmountData = {
@@ -19,7 +19,7 @@ interface PaginationNumbersProps {
 
 export function PaginationNumbers({ changePageFunction, count, amount }: PaginationNumbersProps) {
   const [pageArray, setPageArray] = useState<number[]>([]);
-  const { setIsLoading, pageNumbers, setPageNumbers } = usePagination();
+  const { setIsLoading, pageNumbers, setPageNumbers } = usePokedex();
 
   useEffect(() => {
     function generatePageNumbers() {
@@ -63,7 +63,7 @@ export function PaginationNumbers({ changePageFunction, count, amount }: Paginat
       <button onClick={() => changePageFunction('prev')}>{`<<`}</button>
       {pageArray.map(page => {
         return (
-          <PageButton key={page} className={page.toString() + '-select'} onClick={(event) => updateSearch(page)} selectedPage={pageNumbers.first.toString() + '-select'}>{page}</PageButton>
+          <PageButton key={page} className={page.toString() + '-select'} onClick={() => updateSearch(page)}>{page}</PageButton>
         )
       })}
       <button onClick={() => changePageFunction('next')}>{`>>`}</button>

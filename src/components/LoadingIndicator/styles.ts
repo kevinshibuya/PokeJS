@@ -8,7 +8,8 @@ export const Container = styled.div`
   grid-column-start: 2;
 
   img {
-    opacity: 0.15;
+    opacity: 0.1;
+    filter: grayscale(100%);
     animation: rotation 20s infinite linear;  
   }
 

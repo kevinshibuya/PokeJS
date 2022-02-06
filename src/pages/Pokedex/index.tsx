@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Cards } from "../../components/Cards";
 import { LoadingIndicator } from '../../components/LoadingIndicator';
 import { PaginationNumbers } from '../../components/PaginationNumbers';
-import { usePagination } from "../../hooks/usePagination";
+import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
 import { PokemonData } from "../../types/global";
 
@@ -16,20 +16,11 @@ interface PaginationData {
   results: { name: string; url: string; }[];
 }
 
-interface GetAmountData {
-  amount: number;
-  limit: number;
-}
 
 
-export function Dashboard() {
-  const [data, setData] = useState<PokemonData[]>([]);
+export function Pokedex() {
   const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
-  const [getAmount, setGetAmount] = useState<GetAmountData>({
-    amount: 0,
-    limit: 21
-  });
-  const { isLoading, setIsLoading, pageNumbers, setPageNumbers } = usePagination();
+  const { isLoading, setIsLoading, pageNumbers, setPageNumbers, data, setData, getAmount, setGetAmount } = usePokedex();
 
   useEffect(() => {
     async function fetchData() {
@@ -64,11 +55,12 @@ export function Dashboard() {
 
       setIsLoading(pokemonData[0].isLoading);
       setData(pokemonData);
+      console.log(pokemonData);
       return pokemonData;
     }
 
     fetchPokeDetails();
-  }, [getAmount, setIsLoading]);
+  }, [getAmount]);
 
   function changePage(direction: string) {
     if (direction === 'next') {

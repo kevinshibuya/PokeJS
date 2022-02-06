@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 interface PageButtonProps {
-  selectedPage: string;
 }
 
 export const Container = styled.div`
@@ -13,7 +12,7 @@ export const Container = styled.div`
   div {
     -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
     box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
-      border-radius: 8px;
+    border-radius: 8px;
   }
 
   button {
