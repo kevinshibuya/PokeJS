@@ -7,7 +7,7 @@ export const Container = styled.div`
     width: 100%;
     margin-bottom: 4rem;
     background: #fff;
-    border-radius: 20px;
+    border-radius: 1.8rem;
     -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
     box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
 
@@ -58,7 +58,7 @@ export const Container = styled.div`
           bottom: 0;
           left: 0;
           width: 100%;
-          border-bottom: 4px solid #FF5350;
+          border-bottom: 0.3rem solid #FF5350;
         }
       }
 
@@ -72,7 +72,7 @@ export const Container = styled.div`
             bottom: 0;
             left: 10%;
             width: 90%;
-            border-bottom: 4px solid #FF5350;
+            border-bottom: 0.3rem solid #FF5350;
           }
         }
       }
@@ -90,7 +90,7 @@ export const Container = styled.div`
           bottom: 0;
           left: 0;
           width: 100%;
-          border-bottom: 4px solid #FF5350;
+          border-bottom: 0.3rem solid #FF5350;
         }
 
         &:first-child {
@@ -102,7 +102,7 @@ export const Container = styled.div`
             bottom: 0;
             left: 10%;
             width: 90%;
-            border-bottom: 4px solid #FF5350;
+            border-bottom: 0.3rem solid #FF5350;
           }
         }
       }

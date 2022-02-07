@@ -13,6 +13,7 @@ interface PaginationNumbersProps {
   amount: {
     getAmount: GetAmountData;
     setGetAmount: (amount: GetAmountData) => void;
+    cardAmount: number;
   }
 }
 
@@ -26,7 +27,7 @@ export function PaginationNumbers({ changePageFunction, count, amount }: Paginat
       let array: number[] = [];
 
       if (pageNumbers.last === null) {
-        
+        // code to resolve go to last bug
       }
       
       for (let i = pageNumbers.first; i <= pageNumbers.last; i++) {
@@ -43,8 +44,8 @@ export function PaginationNumbers({ changePageFunction, count, amount }: Paginat
   function updateSearch(pageNumber: number) {
     setIsLoading(true);
     const newAmount = {
-      amount: (pageNumber - 1) * 21,
-      limit: 21,
+      amount: (pageNumber - 1) * amount.cardAmount,
+      limit: amount.cardAmount,
     }
 
     const newPageNumbers = {

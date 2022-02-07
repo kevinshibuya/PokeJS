@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.button`
-  min-width: 300px;
+  min-width: 20rem;
+  max-width: 25rem;
   width: 100%;
+  height: 13rem;
   padding: 1rem;
-  border: 0px;
-  border-radius: 20px;
+  border: 0rem;
+  border-radius: 1.8rem;
   margin: auto;
   background: #FFF;
   position: relative;
@@ -24,7 +26,7 @@ export const Container = styled.button`
   div.img {
     width: 4rem;
     height: 4rem;
-    margin-top: -3.5rem;
+    margin-top: -4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,5 +66,5 @@ export const Types = styled.div<TypesProps>`
   background: ${(props) => `var(--${props.type})`};
   color: ${(props) => `var(--${props.type}-text)`};
   font-weight: 800;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 `

@@ -12,7 +12,7 @@ export const Container = styled.div`
   div {
     -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
     box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
-    border-radius: 8px;
+    border-radius: 0.5rem;
   }
 
   button {
@@ -22,9 +22,8 @@ export const Container = styled.div`
     font-size: 1rem;
     padding: 1rem;
     font-weight: 700;
-    border: 0px;
     z-index: 1;
-    border: 0px;
+    border: 0rem;
     transition: background 0.2s ease-in;
 
     &:hover {
@@ -37,19 +36,19 @@ export const Container = styled.div`
       right: 0;
       top: 20%;
       height: 60%;
-      border-right: 1px solid #011030;
+      border-right: 0.1rem solid #011030;
     }
 
     &:first-child {
-      border-radius: 8px 0px 0px 8px;
+      border-radius: 0.5rem 0rem 0rem 0.5rem;
     }
 
     &:last-child {
-      border-right: 0px;
-      border-radius: 0px 8px 8px 0px;
+      border-right: 0rem;
+      border-radius: 0rem 0.5rem 0.5rem 0rem;
 
       &:before {
-        border: 0px;
+        border: 0rem;
       }
     }
     
