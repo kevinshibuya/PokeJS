@@ -2,25 +2,14 @@ import { useEffect, useState } from "react";
 import { usePokedex } from "../../hooks/usePokedex";
 import { Container, PageButton } from "./styles"
 
-type GetAmountData = {
-  amount: number;
-  limit: number;
-}
-
 interface PaginationNumbersProps {
-  changePageFunction: (direction: string) => void;
   count: number;
-  amount: {
-    getAmount: GetAmountData;
-    setGetAmount: (amount: GetAmountData) => void;
-    cardAmount: number;
-  }
 }
 
 
-export function PaginationNumbers({ changePageFunction, count, amount }: PaginationNumbersProps) {
+export function PaginationNumbers({ count }: PaginationNumbersProps) {
   const [pageArray, setPageArray] = useState<number[]>([]);
-  const { setIsLoading, pageNumbers, setPageNumbers } = usePokedex();
+  const { setIsLoading, pageNumbers, setPageNumbers, dataAmount, setDataAmount, cardAmount } = usePokedex();
 
   useEffect(() => {
     function generatePageNumbers() {
@@ -44,8 +33,8 @@ export function PaginationNumbers({ changePageFunction, count, amount }: Paginat
   function updateSearch(pageNumber: number) {
     setIsLoading(true);
     const newAmount = {
-      amount: (pageNumber - 1) * amount.cardAmount,
-      limit: amount.cardAmount,
+      start: (pageNumber - 1) * cardAmount,
+      dataLimit: cardAmount,
     }
 
     const newPageNumbers = {
@@ -53,22 +42,66 @@ export function PaginationNumbers({ changePageFunction, count, amount }: Paginat
       last: pageNumber + 4
     }
 
-    amount.setGetAmount(newAmount);
+    setDataAmount(newAmount);
     setPageNumbers(newPageNumbers);
+  }
+
+  function changePage(direction: string) {
+    if (direction === 'next') {
+      setIsLoading(true);
+      setDataAmount({
+        start: dataAmount.start + cardAmount,
+        dataLimit: cardAmount
+      });
+      setPageNumbers({
+        first: pageNumbers.first + 1,
+        last: pageNumbers.last + 1
+      });
+    } else if (direction === 'prev' && dataAmount.start >= cardAmount) {
+      setIsLoading(true);
+      setDataAmount({
+        start: dataAmount.start - cardAmount,
+        dataLimit: cardAmount
+      });
+      setPageNumbers({
+        first: pageNumbers.first + -1,
+        last: pageNumbers.last + -1
+      });
+    } else if (direction === 'last') {
+      setIsLoading(true);
+      setDataAmount({
+        start: (Math.floor(count / cardAmount)) * cardAmount,
+        dataLimit: count - (Math.floor(count / cardAmount)) * cardAmount
+      });
+      setPageNumbers({
+        first: Math.floor(count / cardAmount),
+        last: 5
+      });
+    } else if (direction === 'first') {
+      setIsLoading(true);
+      setDataAmount({
+        start: 0,
+        dataLimit: cardAmount
+      });
+      setPageNumbers({
+        first: 1,
+        last: 5
+      });
+    }
   }
 
   return (
     <Container>
       <div>
-      <button onClick={() => changePageFunction('first')}>First</button>
-      <button onClick={() => changePageFunction('prev')}>{`<<`}</button>
+      <button onClick={() => changePage('first')}>First</button>
+      <button onClick={() => changePage('prev')}>{`<<`}</button>
       {pageArray.map(page => {
         return (
           <PageButton key={page} className={page.toString() + '-select'} onClick={() => updateSearch(page)}>{page}</PageButton>
         )
       })}
-      <button onClick={() => changePageFunction('next')}>{`>>`}</button>
-      <button onClick={() => changePageFunction('last')}>Last</button>
+      <button onClick={() => changePage('next')}>{`>>`}</button>
+      <button onClick={() => changePage('last')}>Last</button>
       </div>
     </Container>
   )
