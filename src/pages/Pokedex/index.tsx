@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import debounce from 'lodash.debounce';
 
 import { Cards } from "../../components/Cards";
 import { LoadingIndicator } from '../../components/LoadingIndicator';
@@ -18,21 +19,16 @@ interface PaginationData {
 
 export function Pokedex() {
   const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
-  const [search, setSearch] = useState('');
+  const [pageAmount, setPageAmount] = useState(0);
 
-  const { isLoading, setIsLoading, data, setData, dataAmount, setDataAmount } = usePokedex();
-
-  function searchFilter(value: { name: string; url: string; }) {
-    return value.name.includes(search);
-  }
+  const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers } = usePokedex();
 
   useEffect(() => {
     async function fetchData() {
       const limitAmount: number = await api.get(`/pokemon`)
-        .then(data => data.data.count)
+        .then(data => data.data.count);
       const data: PaginationData = await api.get(`/pokemon/?offset=0&limit=${limitAmount}`)
-        .then(data => data.data)
-
+        .then(data => data.data);
 
       setPaginationData({
         count: data.count,
@@ -41,7 +37,6 @@ export function Pokedex() {
         results: data.results
       });
 
-      console.log(data);
       return data;
     }
 
@@ -49,14 +44,25 @@ export function Pokedex() {
 
   }, []);
 
+  function searchFilter(value: { name: string; url: string; }) {
+    return value.name.includes(search);
+  }
+
   useEffect(() => {
     async function fetchPokemonData() {
       const filteredDataResults = paginationData.results.filter(searchFilter);
-
-      const dataLimit = filteredDataResults.length > dataAmount.dataLimit ? dataAmount.dataLimit : filteredDataResults.length;
       let pokemonData: PokemonData[] = [];
-      
-      for (let i = 0; i < dataLimit; i++) {
+
+      const setMaxDataAmount = filteredDataResults.length > cardAmount * pageNumbers.first ? cardAmount * pageNumbers.first : filteredDataResults.length;
+      const setMinDataAmount = cardAmount * (pageNumbers.first - 1) < 0 ? 0 : cardAmount * (pageNumbers.first - 1);
+
+      if (setMaxDataAmount === 0) {
+        setIsLoading(false);
+        setData([]);
+        return;
+      }
+
+      for (let i = setMinDataAmount; i < setMaxDataAmount; i++) {
         pokemonData.push(await api.get(filteredDataResults[i].url)
           .then(data => {
             return {
@@ -68,18 +74,23 @@ export function Pokedex() {
       }
 
       setIsLoading(pokemonData[0].isLoading);
+      setPageAmount(Math.ceil(filteredDataResults.length / cardAmount));
       setData(pokemonData);
-      console.log(pokemonData);
+
       return pokemonData;
     }
 
     fetchPokemonData();
-  }, [search, paginationData]);
+  }, [search, paginationData, cardAmount, pageNumbers]);
 
-  function changeSearch(value: string) {
-    console.log(value);
-    setSearch(value);
+  function changeSearch(event: any) {
+    setIsLoading(true);
+    setSearch(event.target.value);
   }
+
+  const debounceChangeSearch = useMemo(() => {
+    return debounce(changeSearch, 300);
+  }, [])
 
   return (
     <Container>
@@ -87,7 +98,7 @@ export function Pokedex() {
         <input
           type="text"
           placeholder="Search your Pokemon!"
-          onChange={(e) => changeSearch(e.target.value)}
+          onChange={debounceChangeSearch}
         />
       </div>
       <div className="cards">
@@ -97,7 +108,7 @@ export function Pokedex() {
           )
         })}
       </div>
-      <PaginationNumbers count={paginationData.count} />
+      <PaginationNumbers pageAmount={pageAmount} search={search} />
     </Container>
   )
 }

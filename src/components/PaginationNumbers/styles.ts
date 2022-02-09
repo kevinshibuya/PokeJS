@@ -56,6 +56,20 @@ export const Container = styled.div`
       background: #f2f2f2!important;
     }
   }
+
+  @media (max-width: 440px) {
+    .next-button {
+      border-right: 0rem;
+      border-radius: 0rem 0.5rem 0.5rem 0rem;
+
+      &:before {
+        border: 0rem;
+      }
+    }
+    .hide-button {
+      display: none;
+    }
+  }
 `
 
 export const PageButton = styled.button<PageButtonProps>`

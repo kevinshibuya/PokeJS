@@ -12,14 +12,9 @@ interface PokedexContextData {
   setIsLoading: (value: boolean) => void;
   data: PokemonData[];
   setData: (data: PokemonData[]) => void;
-  dataAmount: DataAmount;
-  setDataAmount: (getAmount: DataAmount) => void;
   cardAmount: number;
-}
-
-interface DataAmount {
-  start: number;
-  dataLimit: number;
+  search: string;
+  setSearch: (value: string) => void;
 }
 
 type PageNumbers = {
@@ -37,11 +32,8 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<PokemonData[]>([]);
   const [cardAmount, setCardAmount] = useState(0);
-  const [dataAmount, setDataAmount] = useState<DataAmount>({
-    start: 0,
-    dataLimit: cardAmount,
-  });
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [search, setSearch] = useState('');
 
   function handleWindowSizeChange() {
     setScreenWidth(window.innerWidth);
@@ -49,7 +41,6 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
 
   useEffect(() => {
     window.addEventListener('resize', handleWindowSizeChange);
-    console.log(window.innerWidth)
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
     }
@@ -61,33 +52,15 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   useEffect(() => {
     if (isMobile) {
       setCardAmount(5);
-      setDataAmount({
-        start: 0,
-        dataLimit: 5,
-      });
     } else if (isSmallScreen) {
       setCardAmount(10);
-      setDataAmount({
-        start: 0,
-        dataLimit: 10,
-      });
     } else {
       setCardAmount(15);
-      setDataAmount({
-        start: 0,
-        dataLimit: 15,
-      });
     }
   }, [isMobile, isSmallScreen]);
 
-  // function updateSearch(pageNumber: number) {
-  //   {oldAmount, amount} * pageNumber
-  //   return {oldAmount, amount}
-  //   setado em setDataAmount()
-  // }
-
  return (
-   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, dataAmount, setDataAmount, cardAmount }}>
+   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, cardAmount, search, setSearch }}>
      {children}
    </PokedexContext.Provider>
  )
