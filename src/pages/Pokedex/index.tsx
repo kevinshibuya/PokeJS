@@ -101,8 +101,9 @@ export function Pokedex() {
           onChange={debounceChangeSearch}
         />
       </div>
+      {isLoading ? <LoadingIndicator /> : undefined}
       <div className="cards">
-        {isLoading ? <LoadingIndicator /> : data.map(data => {
+        {isLoading ? undefined : data.map(data => {
           return (
             <Cards key={data.data.id} pokemonData={data.data}></Cards>
           )
