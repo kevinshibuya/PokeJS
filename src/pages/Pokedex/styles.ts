@@ -23,6 +23,29 @@ export const Container = styled.div`
       }
     }
   }
+  
+  button.order-by {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1rem;
+    background: none;
+    border: none;
+    margin-top: 2rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    img {
+      margin: auto;
+      margin-left: 0.3rem;
+      height: 1rem;
+    }
+  }
 
   div.cards {
     position: relative;
@@ -37,5 +60,13 @@ export const Container = styled.div`
     @media(max-width: 674px) {
       grid-template-columns: 1fr;
     }
+  }
+
+  .no-pokemon {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `

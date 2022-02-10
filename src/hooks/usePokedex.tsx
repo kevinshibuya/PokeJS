@@ -15,6 +15,17 @@ interface PokedexContextData {
   cardAmount: number;
   search: string;
   setSearch: (value: string) => void;
+  orderByValue: string;
+  setOrderByValue: (value: string) => void;
+  paginationData: PaginationData;
+  setPaginationData: (data: PaginationData) => void;
+}
+
+interface PaginationData {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: { name: string; url: string; }[];
 }
 
 type PageNumbers = {
@@ -34,6 +45,8 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   const [cardAmount, setCardAmount] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [search, setSearch] = useState('');
+  const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
+  const [orderByValue, setOrderByValue] = useState('dft');
 
   function handleWindowSizeChange() {
     setScreenWidth(window.innerWidth);
@@ -60,7 +73,7 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   }, [isMobile, isSmallScreen]);
 
  return (
-   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, cardAmount, search, setSearch }}>
+   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, orderByValue, setOrderByValue, paginationData, setPaginationData }}>
      {children}
    </PokedexContext.Provider>
  )

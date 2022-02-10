@@ -9,6 +9,9 @@ import { api } from "../../services/api";
 import { PokemonData } from "../../types/global";
 
 import { Container } from "./styles"
+import desc from '../../assets/descending.png';
+import asc from '../../assets/ascending.png';
+import dft from '../../assets/default.png';
 
 interface PaginationData {
   count: number;
@@ -18,13 +21,14 @@ interface PaginationData {
 }
 
 export function Pokedex() {
-  const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
   const [pageAmount, setPageAmount] = useState(0);
 
-  const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers } = usePokedex();
+  const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers, orderByValue, setOrderByValue, paginationData, setPaginationData } = usePokedex();
 
   useEffect(() => {
     async function fetchData() {
+      if (Object.keys(paginationData).length !== 0) return;
+      console.log("Fetching data...");
       const limitAmount: number = await api.get(`/pokemon`)
         .then(data => data.data.count);
       const data: PaginationData = await api.get(`/pokemon/?offset=0&limit=${limitAmount}`)
@@ -59,6 +63,7 @@ export function Pokedex() {
       if (setMaxDataAmount === 0) {
         setIsLoading(false);
         setData([]);
+        setPageAmount(1);
         return;
       }
 
@@ -86,20 +91,109 @@ export function Pokedex() {
   function changeSearch(event: any) {
     setIsLoading(true);
     setSearch(event.target.value);
+
+    return search;
   }
 
   const debounceChangeSearch = useMemo(() => {
     return debounce(changeSearch, 300);
-  }, [])
+  }, []);
+
+  const options = [
+    {
+      name: 'Default',
+      value: 'dft'
+    },
+    {
+      name: 'Ascending',
+      value: 'asc'
+    },
+    {
+      name: 'Descending',
+      value: 'desc'
+    },
+  ];
+
+  useEffect(() => {
+    async function handleOrderChange() {
+      setIsLoading(true);
+      const newPaginationData = await { ...paginationData };
+
+      let newData;
+
+      switch (orderByValue) {
+        case 'asc':
+          newData = newPaginationData.results.sort((a: any, b: any) => {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+          });
+          break;
+        case 'desc':
+          newData = newPaginationData.results.sort((a: any, b: any) => {
+            if (a.name < b.name) { return 1; }
+            if (a.name > b.name) { return -1; }
+            return 0;
+          });
+          break;
+        default:
+          newData = newPaginationData.results.sort((a: any, b: any) => {
+            const stringA = parseInt(a.url.substr(34).replace('/', ''));
+            const stringB = parseInt(b.url.substr(34).replace('/', ''));
+            if (stringA < stringB) { return -1; }
+            if (stringA > stringB) { return 1; }
+            return 0;
+          });
+          break;
+      }
+
+      setPaginationData({
+        count: newPaginationData.count,
+        next: newPaginationData.next,
+        previous: newPaginationData.previous,
+        results: newData
+      });
+    }
+
+    handleOrderChange()
+  }, [orderByValue]);
+
+  function handleOrderBy(filter: string) {
+    let nextOrderValue = '';
+    switch (filter) {
+      case 'dft':
+        nextOrderValue = 'asc';
+        break;
+      case 'asc':
+        nextOrderValue = 'desc';
+        break;
+      default:
+        nextOrderValue = 'dft';
+        break;
+    }
+    setOrderByValue(nextOrderValue);
+  }
 
   return (
     <Container>
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search your Pokemon!"
+          placeholder={search ? search : "Search your Pokemon!"}
           onChange={debounceChangeSearch}
         />
+        <button className="order-by" onClick={() => handleOrderBy(orderByValue)}>
+          {options[options.findIndex((option) => { return option.value === orderByValue; })].name}
+          {options.map(option => {
+            if (option.value === orderByValue && option.value === 'asc') {
+              return <img src={asc} alt="Ascending" />
+            } else if (option.value === orderByValue && option.value === 'desc') {
+              return <img src={desc} alt="Descending" />
+            }else if (option.value === orderByValue && option.value === 'dft') {
+              return <img src={dft} alt="Default" />
+            }
+          })}
+        </button>
       </div>
       {isLoading ? <LoadingIndicator /> : undefined}
       <div className="cards">
@@ -109,6 +203,12 @@ export function Pokedex() {
           )
         })}
       </div>
+      {data.length === [].length && !isLoading
+        ? <div className="no-pokemon">
+          No pokemon found
+        </div>
+        : undefined
+      }
       <PaginationNumbers pageAmount={pageAmount} search={search} />
     </Container>
   )

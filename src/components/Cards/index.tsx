@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { PokemonData } from "../../types/global";
 import { Container, Types } from "./styles";
 
@@ -8,6 +9,7 @@ interface CardsProps {
 export function Cards({pokemonData}: CardsProps) {
   return (
     <Container>
+      <NavLink to="/pokemon">
       <div className="img">
         <img src={pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default ? pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default : pokemonData.sprites.front_default} alt={pokemonData.name} />
       </div>
@@ -24,6 +26,7 @@ export function Cards({pokemonData}: CardsProps) {
           )
         })}
       </div>
+      </NavLink>
     </Container>
   )
 }
