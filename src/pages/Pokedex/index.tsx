@@ -41,11 +41,13 @@ export function Pokedex() {
         results: data.results
       });
 
+      console.log(data);
       return data;
     }
 
     fetchData();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function searchFilter(value: { name: string; url: string; }) {
@@ -86,6 +88,7 @@ export function Pokedex() {
     }
 
     fetchPokemonData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, paginationData, cardAmount, pageNumbers]);
 
   function changeSearch(event: any) {
@@ -97,6 +100,7 @@ export function Pokedex() {
 
   const debounceChangeSearch = useMemo(() => {
     return debounce(changeSearch, 300);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const options = [
@@ -156,6 +160,7 @@ export function Pokedex() {
     }
 
     handleOrderChange()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderByValue]);
 
   function handleOrderBy(filter: string) {
@@ -192,6 +197,7 @@ export function Pokedex() {
             }else if (option.value === orderByValue && option.value === 'dft') {
               return <img src={dft} alt="Default" />
             }
+            return undefined;
           })}
         </button>
       </div>

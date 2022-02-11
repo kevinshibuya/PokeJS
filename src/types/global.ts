@@ -25,6 +25,9 @@ export type PokemonData = {
       other: {
         "official-artwork": {
           front_default: string;
+        },
+        home: {
+          front_default: string;
         }
       };
       versions: {
@@ -38,7 +41,7 @@ export type PokemonData = {
       }
     }
     stats: {
-      baseStat: number;
+      base_stat: number;
       stat: {
         name: string;
       }
