@@ -15,6 +15,10 @@ export type PokemonData = {
       is_hidden: boolean;
       slot: number;
     }[];
+    species: {
+      name: string;
+      url: string;
+    }
     sprites: {
       front_default: string;
       front_female?: string;

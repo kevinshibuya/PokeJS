@@ -12,8 +12,8 @@ export function RootRoutes() {
         <Route path="/" element={<App />}>
           <Route path="" element={<Pokedex />} />
           <Route path="about" element={<About />} />
+          <Route path="pokemon" element={<Pokemon />} />
         </Route>
-        <Route path="/pokemon" element={<Pokemon />} />
       </Routes>
     </>
   )
