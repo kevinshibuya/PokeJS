@@ -6,8 +6,9 @@ import { animated, useSpring } from 'react-spring';
 import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
+import { PokemonAbility } from "../../components/PokemonAbility"
 
-import { Container, PokemonAbility, Types, PokemonStats } from "./styles";
+import { Container, Types, PokemonStats } from "./styles";
 
 interface MorePokemonData {
   flavorTextEntry: string;
@@ -15,15 +16,9 @@ interface MorePokemonData {
   genera: string;
 }
 
-interface PokemonAbilitiesDetails {
-  name: string;
-  description: string;
-  isVisible: boolean;
-};
 
 export function Pokemon() {
   const [morePokemonData, setMorePokemonData] = useState<MorePokemonData>({} as MorePokemonData);
-  const [pokemonAbilitiesDetails, setPokemonAbilitiesDetails] = useState<PokemonAbilitiesDetails[]>([]);
   const { pokemonDetails, screenScrollHeight } = usePokedex();
 
   const pokemonOfficialSprite = pokemonDetails.sprites.other["official-artwork"].front_default;
@@ -70,7 +65,6 @@ export function Pokemon() {
 
   useEffect(() => {
     async function fetchData() {
-      console.log('runned')
       const morePokemonData = await api.get(pokemonDetails.species.url)
         .then(data => {
           return {
@@ -80,26 +74,12 @@ export function Pokemon() {
           }
         });
 
-      const pokemonAbilitiesDetails = [];
-
-      for (let i = 0; i < pokemonDetails.abilities.length; i++) {
-        pokemonAbilitiesDetails.push(await api.get(pokemonDetails.abilities[i].ability.url)
-          .then((data) => {
-            return {
-              name: data.data.name,
-              description: data.data.effect_entries[data.data.effect_entries.findIndex((data: any) => data.language.name === 'en')].effect,
-              isVisible: false
-            }
-          })
-        )
-      }
 
       setMorePokemonData({
         japaneseName: morePokemonData.names[morePokemonData.names.findIndex((data: any) => data.language.name === 'ja')].name,
         flavorTextEntry: morePokemonData.flavor_text_entries[morePokemonData.flavor_text_entries.findIndex((data: any) => data.language.name === 'en')].flavor_text,
         genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus
       });
-      setPokemonAbilitiesDetails(pokemonAbilitiesDetails);
     }
 
     fetchData();
@@ -122,12 +102,6 @@ export function Pokemon() {
     return dataFormatted;
   }
 
-  function toggleDescriptionVisibility(data: PokemonAbilitiesDetails) {
-    let updatedPokemonAbilitiesDetails = [...pokemonAbilitiesDetails];
-    updatedPokemonAbilitiesDetails[updatedPokemonAbilitiesDetails.findIndex(pokemonAbility => data.name === pokemonAbility.name)].isVisible = !data.isVisible;
-    setPokemonAbilitiesDetails(updatedPokemonAbilitiesDetails);
-    console.log(updatedPokemonAbilitiesDetails);
-  }
 
 
   return (
@@ -175,12 +149,7 @@ export function Pokemon() {
                 <div className="content">
                   {pokemonDetails.abilities.map(ability => {
                     return (
-                      <PokemonAbility onClick={() => toggleDescriptionVisibility(pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)])} key={ability.ability.name} isHidden={ability.is_hidden} isVisible={pokemonAbilitiesDetails.length === 0 ? false : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].isVisible}>
-                        {ability.ability.name}
-                        <div className="tooltip">
-                          {pokemonAbilitiesDetails.length === 0 ? '' : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].description}
-                        </div>
-                      </PokemonAbility>
+                      <PokemonAbility key={ability.ability.name} ability={ability} />
                     )
                   })}
                 </div>

@@ -41,7 +41,6 @@ export function Pokedex() {
         results: data.results
       });
 
-      console.log(data);
       return data;
     }
 
