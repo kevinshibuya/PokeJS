@@ -230,8 +230,10 @@ export const PokemonAbility = styled.div<PokemonAbilityTypeProps>`
     font-size: 1rem;
     font-weight: 400;
     text-transform: none;
-    border-radius: 1.8rem;
+    border-radius: 1rem;
     width: 200px;
+    max-height: 300px;
+    overflow-y: scroll;
     
     position: absolute;
     bottom: 120%;
@@ -242,6 +244,25 @@ export const PokemonAbility = styled.div<PokemonAbilityTypeProps>`
     cursor: default;
     -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
     box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
+
+    /* Firefox */
+      scrollbar-width: auto;
+      scrollbar-color: #a8a8a8 #ffffff;
+
+    /* Chrome, Edge, and Safari */
+    ::-webkit-scrollbar {
+      width: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: none;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #a8a8a8;
+      border-radius: 10px;
+      border: 3px solid #ffffff;
+    }
   }
 `
 
