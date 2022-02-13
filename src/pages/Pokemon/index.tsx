@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePalette } from 'react-palette';
+import { animated, useSpring } from 'react-spring';
 
 import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
-import { PokemonData } from "../../types/global";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
 
 import { Container, PokemonAbility, Types, PokemonStats } from "./styles";
@@ -15,36 +15,53 @@ interface MorePokemonData {
   genera: string;
 }
 
+interface PokemonAbilitiesDetails {
+  name: string;
+  description: string;
+  isVisible: boolean;
+};
+
 export function Pokemon() {
   const [morePokemonData, setMorePokemonData] = useState<MorePokemonData>({} as MorePokemonData);
-  const { pokemonDetails, isLoading, setIsLoading, backgroundColor, setBackgroundColor, outerScreenSize} = usePokedex();
-  const { data, loading, error } = usePalette(pokemonDetails.sprites.other["official-artwork"].front_default ? pokemonDetails.sprites.other["official-artwork"].front_default : pokemonDetails.sprites.other.home.front_default);
+  const [pokemonAbilitiesDetails, setPokemonAbilitiesDetails] = useState<PokemonAbilitiesDetails[]>([]);
+  const { pokemonDetails, screenScrollHeight } = usePokedex();
+
+  const pokemonOfficialSprite = pokemonDetails.sprites.other["official-artwork"].front_default;
+  const pokemonHomeSprite = pokemonDetails.sprites.other.home.front_default;
+  const { data, loading } = usePalette(pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite);
+
+  const animateBackground = useSpring({
+    from: { background: '#F6F8FC' },
+    to: { background: data.vibrant },
+    leave: { background: '#F6F8FC' },
+    delay: 200
+  });
 
   const pokeStatsTitles = [
     {
       name: 'HP',
       color: '#DF2240',
-    }, 
+    },
     {
       name: 'ATK',
       color: '#FF994D',
-    }, 
+    },
     {
       name: 'DEF',
       color: '#FFDC49',
-    }, 
+    },
     {
       name: 'SpA',
       color: '#87DDFF',
-    }, 
+    },
     {
       name: 'SpD',
       color: '#A8EF90',
-    }, 
+    },
     {
       name: 'SPD',
       color: '#FB96A9',
-    }, 
+    },
     {
       name: 'TOT',
       color: '#7595DB',
@@ -52,8 +69,8 @@ export function Pokemon() {
   ]
 
   useEffect(() => {
-    setIsLoading(loading);
     async function fetchData() {
+      console.log('runned')
       const morePokemonData = await api.get(pokemonDetails.species.url)
         .then(data => {
           return {
@@ -63,18 +80,30 @@ export function Pokemon() {
           }
         });
 
+      const pokemonAbilitiesDetails = [];
+
+      for (let i = 0; i < pokemonDetails.abilities.length; i++) {
+        pokemonAbilitiesDetails.push(await api.get(pokemonDetails.abilities[i].ability.url)
+          .then((data) => {
+            return {
+              name: data.data.name,
+              description: data.data.effect_entries[data.data.effect_entries.findIndex((data: any) => data.language.name === 'en')].effect,
+              isVisible: false
+            }
+          })
+        )
+      }
+
       setMorePokemonData({
         japaneseName: morePokemonData.names[morePokemonData.names.findIndex((data: any) => data.language.name === 'ja')].name,
         flavorTextEntry: morePokemonData.flavor_text_entries[morePokemonData.flavor_text_entries.findIndex((data: any) => data.language.name === 'en')].flavor_text,
-        genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus,
+        genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus
       });
-
-      console.log(data.vibrant);
-      setBackgroundColor(data.vibrant ? data.vibrant : backgroundColor);
-      setIsLoading(false);
+      setPokemonAbilitiesDetails(pokemonAbilitiesDetails);
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const statsTotal = pokemonDetails.stats.reduce((acc, cur) => {
@@ -93,11 +122,19 @@ export function Pokemon() {
     return dataFormatted;
   }
 
+  function toggleDescriptionVisibility(data: PokemonAbilitiesDetails) {
+    let updatedPokemonAbilitiesDetails = [...pokemonAbilitiesDetails];
+    updatedPokemonAbilitiesDetails[updatedPokemonAbilitiesDetails.findIndex(pokemonAbility => data.name === pokemonAbility.name)].isVisible = !data.isVisible;
+    setPokemonAbilitiesDetails(updatedPokemonAbilitiesDetails);
+    console.log(updatedPokemonAbilitiesDetails);
+  }
+
+
   return (
     <>
-      {isLoading ? <LoadingIndicator /> :
-        <Container backgroundColor={backgroundColor} outerScreenSize={outerScreenSize}>
-          <div className="background-wrapper"></div>
+      {loading ? <LoadingIndicator /> :
+        <Container screenScrollHeight={screenScrollHeight}>
+          <animated.div style={animateBackground} className="background-wrapper"></animated.div>
           <div className="title-wrapper">
             <NavLink to="/">return</NavLink>
             <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
@@ -107,7 +144,7 @@ export function Pokemon() {
             <div className="pokemon-landing">
               <div className="img official-artwork">
                 <h1 className="pokemon-name japanese">{morePokemonData.japaneseName}</h1>
-                <img src={pokemonDetails.sprites.other["official-artwork"].front_default ? pokemonDetails.sprites.other["official-artwork"].front_default : pokemonDetails.sprites.other.home.front_default} alt={pokemonDetails.name} />
+                <img src={pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite} alt={pokemonDetails.name} />
               </div>
             </div>
             <div className="pokemon-details">
@@ -138,8 +175,11 @@ export function Pokemon() {
                 <div className="content">
                   {pokemonDetails.abilities.map(ability => {
                     return (
-                      <PokemonAbility key={ability.ability.name} isHidden={ability.is_hidden}>
+                      <PokemonAbility onClick={() => toggleDescriptionVisibility(pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)])} key={ability.ability.name} isHidden={ability.is_hidden} isVisible={pokemonAbilitiesDetails.length === 0 ? false : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].isVisible}>
                         {ability.ability.name}
+                        <div className="tooltip">
+                          {pokemonAbilitiesDetails.length === 0 ? '' : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].description}
+                        </div>
                       </PokemonAbility>
                     )
                   })}

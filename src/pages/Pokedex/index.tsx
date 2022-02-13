@@ -121,7 +121,7 @@ export function Pokedex() {
   useEffect(() => {
     async function handleOrderChange() {
       setIsLoading(true);
-      const newPaginationData = await { ...paginationData };
+      const newPaginationData = { ...paginationData };
 
       let newData;
 

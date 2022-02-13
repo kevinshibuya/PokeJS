@@ -1,10 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-type GlobalStyleProps = {
-  backgroundColor: string;
-}
-
-export const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
+export const GlobalStyle = createGlobalStyle`
   :root {
     --normal: #A8A878;
     --normal-text: #2e2e21;
@@ -78,7 +74,7 @@ export const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
   }
 
   body {
-    background: ${(props) => props.backgroundColor ? props.backgroundColor : '#F6F8FC'};
+    background: #F6F8FC;
     -webkit-font-smoothing: antialiased;
     max-width: 1120px;
     margin: 0 auto;
