@@ -21,6 +21,9 @@ interface PokedexContextData {
   setPaginationData: (data: PaginationData) => void;
   pokemonDetails: PokemonData["data"];
   setPokemonDetails: (data: PokemonData["data"]) => void;
+  backgroundColor: string;
+  setBackgroundColor: (value: string) => void;
+  outerScreenSize: OuterScreenSize;
 }
 
 interface PaginationData {
@@ -35,6 +38,11 @@ type PageNumbers = {
   last: number;
 }
 
+type OuterScreenSize = {
+  height: number;
+  width: number;
+}
+
 const PokedexContext = createContext<PokedexContextData>({} as PokedexContextData);
 
 export function PokedexProvider({ children }: PokedexProviderProps) {
@@ -46,13 +54,19 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   const [data, setData] = useState<PokemonData[]>([]);
   const [cardAmount, setCardAmount] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [outerScreenSize, setOuterScreenSize] = useState<OuterScreenSize>({} as OuterScreenSize);
   const [search, setSearch] = useState('');
   const [paginationData, setPaginationData] = useState<PaginationData>({} as PaginationData);
   const [orderByValue, setOrderByValue] = useState('dft');
   const [pokemonDetails, setPokemonDetails] = useState({} as PokemonData["data"]);
+  const [backgroundColor, setBackgroundColor] = useState('#F6F8FC')
 
   function handleWindowSizeChange() {
     setScreenWidth(window.innerWidth);
+    setOuterScreenSize({
+      height: document.body.scrollHeight,
+      width: window.outerWidth
+    });
   }
 
   useEffect(() => {
@@ -76,7 +90,7 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
   }, [isMobile, isSmallScreen]);
 
  return (
-   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, orderByValue, setOrderByValue, paginationData, setPaginationData, pokemonDetails, setPokemonDetails }}>
+   <PokedexContext.Provider value={{ pageNumbers, setPageNumbers, isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, orderByValue, setOrderByValue, paginationData, setPaginationData, pokemonDetails, setPokemonDetails, backgroundColor, setBackgroundColor, outerScreenSize }}>
      {children}
    </PokedexContext.Provider>
  )

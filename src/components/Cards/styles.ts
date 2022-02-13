@@ -11,8 +11,8 @@ export const Container = styled.button`
   border-radius: 1.8rem;
   margin: auto;
   background: #FFF;
-  -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
-  box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
+  -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
+  box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
   transition: background 0.2s ease-in;
   
   &:hover {

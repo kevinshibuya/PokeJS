@@ -191,11 +191,11 @@ export function Pokedex() {
           {options[options.findIndex((option) => { return option.value === orderByValue; })].name}
           {options.map(option => {
             if (option.value === orderByValue && option.value === 'asc') {
-              return <img src={asc} alt="Ascending" />
+              return <img key={option.name} src={asc} alt="Ascending" />
             } else if (option.value === orderByValue && option.value === 'desc') {
-              return <img src={desc} alt="Descending" />
+              return <img key={option.name} src={desc} alt="Descending" />
             }else if (option.value === orderByValue && option.value === 'dft') {
-              return <img src={dft} alt="Default" />
+              return <img key={option.name} src={dft} alt="Default" />
             }
             return undefined;
           })}

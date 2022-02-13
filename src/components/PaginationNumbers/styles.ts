@@ -10,8 +10,8 @@ export const Container = styled.div`
   margin-top: 4rem;
 
   div {
-    -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
-    box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
+    -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
+    box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
     border-radius: 0.5rem;
   }
 

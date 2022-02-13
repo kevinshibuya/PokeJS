@@ -2,25 +2,58 @@ import styled from 'styled-components';
 
 import hidden from '../../assets/hidden.svg';
 
-export const Container = styled.div`
-  position: relative;
+type ContainerProps = {
+  backgroundColor: string;
+  outerScreenSize: {
+    width: number;
+    height: number;
+  };
+}
+
+export const Container = styled.div<ContainerProps>`
+  /* position: relative; */
+
+  div.background-wrapper {
+    background: ${(props) => props.backgroundColor ? props.backgroundColor : undefined};
+    position: absolute;
+    width: 100%;
+    height: ${() => document.body.scrollHeight}px;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    transition: background 1s ease-out;
+  }
+
+  div.title-wrapper {
+    position: relative;
+  }
+
+  .pokemon-id {
+    font-size: 1.5rem;
+  }
+
+  .pokemon-name {
+    font-size: 2.5rem;
+  }
 
   .pokemon-name, .pokemon-id {
-    -webkit-text-shadow: 0px 2px 6px rgba(186,186,186, 1); 
-    text-shadow: 0px 2px 6px rgba(186,186,186, 1);
+    color: #FFF;
     text-transform: capitalize;
+    -webkit-text-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
+    text-shadow: 0 1px 15px rgb(0 0 0 / 20%);
   }
 
   div.wrapper {
     display: flex;
     position: relative;
     justify-content: space-between;
+    align-items: center;
 
   }
   
   a {
     position: absolute;
-    top: -20px;
+    top: -30px;
   }
 
   h1.title {
@@ -45,7 +78,6 @@ export const Container = styled.div`
       justify-content: center;
       position: relative;
       width: 100%;
-      margin-top: 2rem;
 
       img {
         width: 90%;
@@ -55,32 +87,33 @@ export const Container = styled.div`
     }
     .pokemon-name {
       &.japanese {
+        color: #000;
         font-family: 'Noto Sans JP', sans-serif;
         font-size: 5rem;
-        opacity: 0.5;
+        opacity: 0.3;
         position: absolute;
         text-shadow: none;
         z-index: 10;
-        top: 0%;
-        left: 0%;
+        top: -5%;
+        left: -5%;
       }
     }
   }
 
-  div.pokemon-details {
+  div.pokemon-wrapper {
     background: #fff;
     border-radius: 1.8rem;
     padding: 1.4rem;
     width: 100%;
-    max-width: 400px;
-    min-width: 350px;
-    /* margin: auto; */
-    -webkit-box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30); 
-    box-shadow: 0px 5px 12px 6px rgba(186,186,186,0.30);
+    max-width: 370px;
+    min-width: 360px;
+    -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
+    box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
+    margin-bottom: 1.2rem;
+  }
 
+  div.pokemon-details {
     div.pokemon-genus {
-      margin-bottom: 1.2rem;
-
       div.types {
         display: flex;
         align-items: center;
@@ -89,8 +122,6 @@ export const Container = styled.div`
     }
 
     div.pokemon-entry {
-      margin-bottom: 1.2rem;
-
       h1.content {
         font-size: 1rem;
         font-weight: 400;
@@ -99,8 +130,6 @@ export const Container = styled.div`
     }
 
     div.abilities {
-      margin-bottom: 1.2rem;
-
       div.content {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -113,6 +142,7 @@ export const Container = styled.div`
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 1rem;
+      grid-row-gap: 1rem;
 
       h1.title {
       }
@@ -121,7 +151,6 @@ export const Container = styled.div`
         background: #F6F8FC;
         padding: 0.5rem;
         border-radius: 30px;
-        margin-bottom: 1.2rem;
 
         font-weight: 600;
         text-align: center;
@@ -129,8 +158,6 @@ export const Container = styled.div`
     }
 
     div.pokemon-stats {
-      margin-bottom: 1.2rem;
-
       div.content {
         display: flex;
         justify-content: space-around;
@@ -194,6 +221,7 @@ export const PokemonAbility = styled.div<PokemonAbilityTypeProps>`
   background-size: 1.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   border-radius: 30px;
+  cursor: pointer;
 
   font-weight: 600;
   text-align: left;

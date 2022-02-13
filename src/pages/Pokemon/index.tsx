@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { usePokedex } from "../../hooks/usePokedex";
 import { NavLink } from "react-router-dom";
+import { usePalette } from 'react-palette';
+
+import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
 import { PokemonData } from "../../types/global";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
@@ -15,7 +17,8 @@ interface MorePokemonData {
 
 export function Pokemon() {
   const [morePokemonData, setMorePokemonData] = useState<MorePokemonData>({} as MorePokemonData);
-  const { pokemonDetails, isLoading, setIsLoading } = usePokedex();
+  const { pokemonDetails, isLoading, setIsLoading, backgroundColor, setBackgroundColor, outerScreenSize} = usePokedex();
+  const { data, loading, error } = usePalette(pokemonDetails.sprites.other["official-artwork"].front_default ? pokemonDetails.sprites.other["official-artwork"].front_default : pokemonDetails.sprites.other.home.front_default);
 
   const pokeStatsTitles = [
     {
@@ -49,7 +52,7 @@ export function Pokemon() {
   ]
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(loading);
     async function fetchData() {
       const morePokemonData = await api.get(pokemonDetails.species.url)
         .then(data => {
@@ -66,12 +69,13 @@ export function Pokemon() {
         genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus,
       });
 
+      console.log(data.vibrant);
+      setBackgroundColor(data.vibrant ? data.vibrant : backgroundColor);
       setIsLoading(false);
-      console.log(pokemonDetails);
     }
 
     fetchData();
-  }, [pokemonDetails]);
+  }, [data]);
 
   const statsTotal = pokemonDetails.stats.reduce((acc, cur) => {
     return {
@@ -92,10 +96,13 @@ export function Pokemon() {
   return (
     <>
       {isLoading ? <LoadingIndicator /> :
-        <Container>
-          <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
-          <h1 className="pokemon-name">{pokemonDetails.name}</h1>
-          <NavLink to="/">return</NavLink>
+        <Container backgroundColor={backgroundColor} outerScreenSize={outerScreenSize}>
+          <div className="background-wrapper"></div>
+          <div className="title-wrapper">
+            <NavLink to="/">return</NavLink>
+            <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
+            <h1 className="pokemon-name">{pokemonDetails.name}</h1>
+          </div>
           <div className="wrapper">
             <div className="pokemon-landing">
               <div className="img official-artwork">
@@ -104,7 +111,7 @@ export function Pokemon() {
               </div>
             </div>
             <div className="pokemon-details">
-              <div className="pokemon-genus">
+              <div className="pokemon-genus pokemon-wrapper">
                 <h1 className="title">
                   {morePokemonData.genera}
                 </h1>
@@ -116,7 +123,7 @@ export function Pokemon() {
                   })}
                 </div>
               </div>
-              <div className="pokemon-entry">
+              <div className="pokemon-entry pokemon-wrapper">
                 <h1 className="title">
                   Pokedex Entry
                 </h1>
@@ -124,21 +131,21 @@ export function Pokemon() {
                   {morePokemonData.flavorTextEntry}
                 </h1>
               </div>
-              <div className="abilities">
+              <div className="abilities pokemon-wrapper">
                 <h1 className="title">
                   Abilities
                 </h1>
                 <div className="content">
                   {pokemonDetails.abilities.map(ability => {
                     return (
-                      <PokemonAbility isHidden={ability.is_hidden}>
+                      <PokemonAbility key={ability.ability.name} isHidden={ability.is_hidden}>
                         {ability.ability.name}
                       </PokemonAbility>
                     )
                   })}
                 </div>
               </div>
-              <div className="data">
+              <div className="data pokemon-wrapper">
                 <div className="height">
                   <h1 className="title">
                     Height
@@ -172,14 +179,14 @@ export function Pokemon() {
                 </div>
               </div> */}
               </div>
-              <div className="pokemon-stats">
+              <div className="pokemon-stats pokemon-wrapper">
                 <h1 className="title">
                   Stats
                 </h1>
                 <div className="content">
                   {pokemonDetails.stats.map((stat, index) => {
                     return (
-                      <PokemonStats className="stat" statName={pokeStatsTitles[index]}>
+                      <PokemonStats key={stat.stat.name} className="stat" statName={pokeStatsTitles[index]}>
                         <div className="stat-title">
                           {pokeStatsTitles[index].name}
                         </div>
