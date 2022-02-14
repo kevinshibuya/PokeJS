@@ -7,6 +7,7 @@ import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
 import { LoadingIndicator } from "../../components/LoadingIndicator";
 import { PokemonAbility } from "../../components/PokemonAbility"
+import { StrenghtsAndWeaknesses } from "../../components/StrengthsAndWeaknesses";
 
 import { Container, Types, PokemonStats } from "./styles";
 
@@ -24,6 +25,30 @@ export function Pokemon() {
   const pokemonOfficialSprite = pokemonDetails.sprites.other["official-artwork"].front_default;
   const pokemonHomeSprite = pokemonDetails.sprites.other.home.front_default;
   const { data, loading } = usePalette(pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite);
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const morePokemonData = await api.get(pokemonDetails.species.url)
+        .then(data => {
+          return {
+            flavor_text_entries: data.data.flavor_text_entries,
+            names: data.data.names,
+            genera: data.data.genera,
+          }
+        });
+
+
+      setMorePokemonData({
+        japaneseName: morePokemonData.names[morePokemonData.names.findIndex((data: any) => data.language.name === 'ja')].name,
+        flavorTextEntry: morePokemonData.flavor_text_entries[morePokemonData.flavor_text_entries.findIndex((data: any) => data.language.name === 'en')].flavor_text,
+        genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus
+      });
+    }
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const animateBackground = useSpring({
     from: { background: '#F6F8FC' },
@@ -62,29 +87,6 @@ export function Pokemon() {
       color: '#7595DB',
     }
   ]
-
-  useEffect(() => {
-    async function fetchData() {
-      const morePokemonData = await api.get(pokemonDetails.species.url)
-        .then(data => {
-          return {
-            flavor_text_entries: data.data.flavor_text_entries,
-            names: data.data.names,
-            genera: data.data.genera,
-          }
-        });
-
-
-      setMorePokemonData({
-        japaneseName: morePokemonData.names[morePokemonData.names.findIndex((data: any) => data.language.name === 'ja')].name,
-        flavorTextEntry: morePokemonData.flavor_text_entries[morePokemonData.flavor_text_entries.findIndex((data: any) => data.language.name === 'en')].flavor_text,
-        genera: morePokemonData.genera[morePokemonData.genera.findIndex((data: any) => data.language.name === 'en')].genus
-      });
-    }
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
   const statsTotal = pokemonDetails.stats.reduce((acc, cur) => {
     return {
@@ -171,22 +173,9 @@ export function Pokemon() {
                     {formatData(pokemonDetails.weight.toString())}kg
                   </div>
                 </div>
-                {/* <div className="strenghts">
-                <h1 className="title">
-                  Strenghts
-                </h1>
-                <div className="content">
-                  {pokemonDetails.base_experience}
-                </div>
               </div>
-              <div className="weaknesses">
-                <h1 className="title">
-                  Weaknesses
-                </h1>
-                <div className="content">
-                  {pokemonDetails.base_experience}
-                </div>
-              </div> */}
+              <div className="data second pokemon-wrapper">
+                <StrenghtsAndWeaknesses />
               </div>
               <div className="pokemon-stats pokemon-wrapper">
                 <h1 className="title">

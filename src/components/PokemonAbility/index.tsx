@@ -33,7 +33,7 @@ export function PokemonAbility({ ability }: PokemonAbilityProps) {
           .then((data) => {
             return {
               name: data.data.name,
-              description: data.data.effect_entries[data.data.effect_entries.findIndex((data: any) => data.language.name === 'en')].effect,
+              description: data.data.effect_entries[data.data.effect_entries.findIndex((data: any) => data.language.name === 'en')] ? data.data.effect_entries[data.data.effect_entries.findIndex((data: any) => data.language.name === 'en')].effect : 'No description found.',
               isVisible: false
             }
           })
@@ -44,6 +44,7 @@ export function PokemonAbility({ ability }: PokemonAbilityProps) {
     }
 
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function toggleDescriptionVisibility(data: PokemonAbilitiesDetails) {
@@ -53,8 +54,10 @@ export function PokemonAbility({ ability }: PokemonAbilityProps) {
   }
 
   return (
-    <Container onClick={() => toggleDescriptionVisibility(pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)])} key={ability.ability.name} isHidden={ability.is_hidden} isVisible={pokemonAbilitiesDetails.length === 0 ? false : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].isVisible}>
-      {ability.ability.name}
+    <Container isHidden={ability.is_hidden} isVisible={pokemonAbilitiesDetails.length === 0 ? false : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].isVisible}>
+      <div onClick={() => toggleDescriptionVisibility(pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)])}>
+        {ability.ability.name}
+      </div>
       <div className="tooltip">
         {pokemonAbilitiesDetails.length === 0 ? '' : pokemonAbilitiesDetails[pokemonAbilitiesDetails.findIndex(data => data.name === ability.ability.name)].description}
       </div>

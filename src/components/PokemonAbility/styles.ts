@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import hidden from '../../assets/hidden.svg';
 
 type ContainerProps = {

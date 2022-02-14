@@ -43,6 +43,13 @@ export const Container = styled.div`
           margin-left: -0.3rem;
           margin-right: 1rem;
         }
+        
+        &.pokemon {
+          height: 4.2rem;
+          margin: -0.6rem;
+          margin-left: -0.3rem;
+          margin-right: 0.3rem;
+        }
       }
 
       &:hover {

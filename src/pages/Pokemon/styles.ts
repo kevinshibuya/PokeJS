@@ -136,6 +136,10 @@ export const Container = styled.div<ContainerProps>`
       grid-column-gap: 1rem;
       grid-row-gap: 1rem;
 
+      &.second {
+        grid-template-columns: 1fr;
+      }
+
       h1.title {
       }
 
