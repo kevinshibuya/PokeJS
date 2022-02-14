@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePalette } from 'react-palette';
-import { animated, useSpring } from 'react-spring';
+import { animated, easings, useSpring, config } from 'react-spring';
 
 import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
@@ -38,7 +38,6 @@ export function Pokemon() {
           }
         });
 
-
       setMorePokemonData({
         japaneseName: morePokemonData.names[morePokemonData.names.findIndex((data: any) => data.language.name === 'ja')].name,
         flavorTextEntry: morePokemonData.flavor_text_entries[morePokemonData.flavor_text_entries.findIndex((data: any) => data.language.name === 'en')].flavor_text,
@@ -53,8 +52,28 @@ export function Pokemon() {
   const animateBackground = useSpring({
     from: { background: '#F6F8FC' },
     to: { background: data.vibrant },
-    leave: { background: '#F6F8FC' },
-    delay: 200
+    config: {...config.gentle}
+  });
+  
+  const animateOpacity = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    delay: 250,
+    config: {...config.gentle}
+  });
+  
+  const animateEnterLeft = useSpring({
+    from: { marginLeft: '-100%', opacity: 0 },
+    to: { marginLeft: '0%', opacity: 1 },
+    delay: 750,
+    config: {...config.gentle}
+  });
+  
+  const animateEnterRight = useSpring({
+    from: { marginRight: '-100%', opacity: 0 },
+    to: { marginRight: '0%', opacity: 1 },
+    delay: 500,
+    config: {...config.gentle}
   });
 
   const pokeStatsTitles = [
@@ -111,19 +130,19 @@ export function Pokemon() {
       {loading ? <LoadingIndicator /> :
         <Container screenScrollHeight={screenScrollHeight}>
           <animated.div style={animateBackground} className="background-wrapper"></animated.div>
-          <div className="title-wrapper">
+          <animated.div style={animateOpacity} className="title-wrapper">
             <NavLink to="/">return</NavLink>
             <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
             <h1 className="pokemon-name">{pokemonDetails.name}</h1>
-          </div>
+          </animated.div>
           <div className="wrapper">
-            <div className="pokemon-landing">
+            <animated.div style={animateEnterLeft} className="pokemon-landing">
               <div className="img official-artwork">
                 <h1 className="pokemon-name japanese">{morePokemonData.japaneseName}</h1>
                 <img src={pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite} alt={pokemonDetails.name} />
               </div>
-            </div>
-            <div className="pokemon-details">
+            </animated.div>
+            <animated.div style={animateEnterRight} className="pokemon-details">
               <div className="pokemon-genus pokemon-wrapper">
                 <h1 className="title">
                   {morePokemonData.genera}
@@ -200,7 +219,7 @@ export function Pokemon() {
                   </div>
                 </div>
               </div>
-            </div>
+            </animated.div>
           </div>
         </Container>
       }
