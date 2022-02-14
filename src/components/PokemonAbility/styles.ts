@@ -20,7 +20,7 @@ export const Container = styled.div<ContainerProps>`
   border: 2px solid ${(props) => props.isHidden ? '#C48385' : '#C2CDEB'};
 
   div.tooltip {
-    opacity: ${(props) => props.isVisible ? 1 : 0};
+    display: ${(props) => props.isVisible ? 'block' : 'none'};
     background: #fff;
     font-size: 1rem;
     font-weight: 400;
