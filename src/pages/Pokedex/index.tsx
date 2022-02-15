@@ -27,10 +27,10 @@ Modal.setAppElement('#root');
 export function Pokedex() {
   const [pageAmount, setPageAmount] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(() => {
-    const storagedDisclaimer = localStorage.getItem('@PokeJS:disclaimer');
+    const storagedNote = localStorage.getItem('@PokeJS:note');
 
-    if (storagedDisclaimer) {
-      return JSON.parse(storagedDisclaimer);
+    if (storagedNote) {
+      return JSON.parse(storagedNote);
     }
 
     return true;
@@ -40,6 +40,7 @@ export function Pokedex() {
 
   useEffect(() => {
     async function fetchData() {
+      localStorage.removeItem('@PokeJS:note');
       if (Object.keys(paginationData).length !== 0) return;
       console.log("Fetching data...");
       const limitAmount: number = await api.get(`/pokemon`)
@@ -192,23 +193,23 @@ export function Pokedex() {
     setOrderByValue(nextOrderValue);
   }
 
-  function closeDisclaimer() {
+  function closeNote() {
     setModalIsOpen(false);
-    localStorage.setItem('@PokeJS:disclaimer', JSON.stringify(false));
+    localStorage.setItem('@PokeJS:note', JSON.stringify(false));
   }
 
   return (
     <Container>
       <Modal
         isOpen={modalIsOpen}
-        onRequestClose={closeDisclaimer}
-        overlayClassName="disclaimer-modal-overlay"
-        className="disclaimer-modal"
-        contentLabel="Disclaimer"
+        onRequestClose={closeNote}
+        overlayClassName="note-modal-overlay"
+        className="note-modal"
+        contentLabel="Note"
       >
-        <div className="disclaimer-title">
-          <h1>Disclaimer</h1>
-          <AiIcons.AiOutlineCloseCircle onClick={closeDisclaimer}/>
+        <div className="note-title">
+          <h1>Note</h1>
+          <AiIcons.AiOutlineCloseCircle onClick={closeNote}/>
         </div>
         <p>This project was made using PokeAPI, which is a really good service, but even then you may find some missing or incorrect information.</p>
       </Modal>

@@ -98,14 +98,14 @@ export const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
   }
 
-  .disclaimer-modal-overlay {
+  .note-modal-overlay {
     position: fixed;
     inset: 0px;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
   }
 
-  .disclaimer-modal {
+  .note-modal {
     inset: 50% auto auto 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
@@ -118,7 +118,7 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     padding: 2rem;
 
-    .disclaimer-title {
+    .note-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
