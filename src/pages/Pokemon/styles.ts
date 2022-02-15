@@ -131,8 +131,7 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 1.8rem;
     padding: 1.4rem;
     width: 100%;
-    max-width: 400px;
-    min-width: 380px;
+    width: 360px;
     -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
     box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
     margin-bottom: 1.2rem;
