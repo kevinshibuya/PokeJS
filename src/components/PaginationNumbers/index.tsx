@@ -21,13 +21,13 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
       const lastNumber = pageAmount >= 5 ? 5 : pageAmount;
 
       for (let i = 0; i < lastNumber; i++) {
-        array.push(i + 1);
+        array.push(i);
       }
 
       setPageArray(array);
       setPageNumbers({
         first: 1,
-        last: lastNumber + 1
+        last: lastNumber
       })
     }
 
@@ -38,7 +38,7 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
   useEffect(() => {
     let array: number[] = [];
 
-    for (let i = pageNumbers.first; i < pageNumbers.last; i++) {
+    for (let i = pageNumbers.first; i <= pageNumbers.last; i++) {
       array.push(i);
     }
 
@@ -65,14 +65,14 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
       setIsLoading(true);
       setPageNumbers({
         first: 1,
-        last: pageAmount >= 5 ? 6 : pageAmount + 1
+        last: pageAmount >= 5 ? 5 : pageAmount
       });
     } else if (direction === 'last') {
       if (pageNumbers.first === pageAmount) return;
       setIsLoading(true);
       setPageNumbers({
         first: pageAmount,
-        last: pageAmount + 1
+        last: pageAmount
       });
     }
   }
