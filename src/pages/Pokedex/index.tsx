@@ -40,7 +40,6 @@ export function Pokedex() {
 
   useEffect(() => {
     async function fetchData() {
-      localStorage.removeItem('@PokeJS:note');
       if (Object.keys(paginationData).length !== 0) return;
       console.log("Fetching data...");
       const limitAmount: number = await api.get(`/pokemon`)
