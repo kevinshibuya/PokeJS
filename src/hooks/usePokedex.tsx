@@ -94,7 +94,6 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
     let newFavoriteData = [...favoritePokemondData];
 
     newPokemon.isFavorite = !(newPokemon.isFavorite);
-    console.log(newPokemon.isFavorite)
 
     if (newPokemon.isFavorite) {
       newFavoriteData.push(newPokemon);
@@ -111,7 +110,6 @@ export function PokedexProvider({ children }: PokedexProviderProps) {
     setPokemonDetails(newPokemon);
     setFavoritePokemondData(newFavoriteData);
     localStorage.setItem('@PokeJS:favorites', JSON.stringify(newFavoriteData));
-    console.log(newFavoriteData);
   }
 
  return (
