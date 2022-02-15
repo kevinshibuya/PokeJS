@@ -86,7 +86,7 @@ export const Container = styled.div`
             content: "";
             position: absolute;
             bottom: 0;
-            left: 5%;
+            left: 10%;
             width: 90%;
             border-bottom: 0.3rem solid #FF5350;
           }
