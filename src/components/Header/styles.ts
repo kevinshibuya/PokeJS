@@ -78,7 +78,7 @@ export const Container = styled.div`
         }
       }
 
-      &:first-child {
+      &.pokedex {
         padding-left: 3rem;
 
         &:hover {
