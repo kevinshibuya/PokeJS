@@ -14,7 +14,7 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
 
   useEffect(() => {
     function generatePageNumbers() {
-      if (pageNumbers.first > 1) return;
+      if (!search) return;
       
       let array: number[] = [];
 

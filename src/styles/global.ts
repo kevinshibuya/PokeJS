@@ -78,7 +78,6 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     max-width: 1120px;
     margin: 0 auto;
-    padding: 4rem 2rem;
   }
 
   body, input, textarea, button {

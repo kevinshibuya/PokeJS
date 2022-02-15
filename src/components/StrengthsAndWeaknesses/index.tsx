@@ -244,7 +244,7 @@ export function StrenghtsAndWeaknesses() {
                     <div className="title type-icon">1/2x</div>
                     {weaknessesAndStrengths.strenghts.map(strenght => {
                       return (
-                        <TypeIcon className="type-icon" typeName={strenght} />
+                        <TypeIcon key={strenght} className="type-icon" typeName={strenght} />
                       )
                     })}
                   </div> : ''}
@@ -253,7 +253,7 @@ export function StrenghtsAndWeaknesses() {
                     <div className="title type-icon">1/4x</div>
                     {weaknessesAndStrengths.superStrengths.map(strenght => {
                       return (
-                        <TypeIcon className="type-icon" typeName={strenght} />
+                        <TypeIcon key={strenght} className="type-icon" typeName={strenght} />
                       )
                     })}
                   </div> : ''}
@@ -270,7 +270,7 @@ export function StrenghtsAndWeaknesses() {
                     <div className="title type-icon">2x</div>
                     {weaknessesAndStrengths.weaknesses.map(strenght => {
                       return (
-                        <TypeIcon className="type-icon" typeName={strenght} />
+                        <TypeIcon key={strenght} className="type-icon" typeName={strenght} />
                       )
                     })}
                   </div> : ''}
@@ -279,7 +279,7 @@ export function StrenghtsAndWeaknesses() {
                     <div className="title type-icon">4x</div>
                     {weaknessesAndStrengths.superWeaknesses.map(strenght => {
                       return (
-                        <TypeIcon className="type-icon" typeName={strenght} />
+                        <TypeIcon key={strenght} className="type-icon" typeName={strenght} />
                       )
                     })}
                   </div> : ''}
@@ -294,7 +294,7 @@ export function StrenghtsAndWeaknesses() {
                 <div className="title type-icon">0x</div>
                 {weaknessesAndStrengths.immune.map(strenght => {
                   return (
-                    <TypeIcon className="type-icon" typeName={strenght} />
+                    <TypeIcon key={strenght} className="type-icon" typeName={strenght} />
                   )
                 })}
               </div>

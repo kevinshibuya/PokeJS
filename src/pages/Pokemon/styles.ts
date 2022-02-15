@@ -10,7 +10,7 @@ export const Container = styled.div<ContainerProps>`
   div.background-wrapper {
     position: absolute;
     width: 100%;
-    height: ${(props) => props.screenScrollHeight ? props.screenScrollHeight : document.body.scrollHeight}px;
+    height: ${(props) => props.screenScrollHeight ? props.screenScrollHeight : document.body.clientHeight}px;
     z-index: -1;
     top: 0;
     left: 0;
@@ -101,6 +101,7 @@ export const Container = styled.div<ContainerProps>`
           width: 40px;
           height: 40px;
           min-width: 0px;
+          filter: drop-shadow(0px 2px 5px rgb(0 0 0 / 0.15));
         }
       }
 
@@ -130,8 +131,8 @@ export const Container = styled.div<ContainerProps>`
     border-radius: 1.8rem;
     padding: 1.4rem;
     width: 100%;
-    max-width: 370px;
-    min-width: 360px;
+    max-width: 400px;
+    min-width: 380px;
     -webkit-box-shadow: 0 1px 15px rgb(0 0 0 / 20%); 
     box-shadow: 0 1px 15px rgb(0 0 0 / 20%);
     margin-bottom: 1.2rem;

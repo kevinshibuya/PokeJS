@@ -23,7 +23,8 @@ interface MorePokemonData {
 
 export function Pokemon() {
   const [morePokemonData, setMorePokemonData] = useState<MorePokemonData>({} as MorePokemonData);
-  const { pokemonDetails, screenScrollHeight, togglePokemonFavorite } = usePokedex();
+  const [screenScrollHeight, setScreenScrollHeight] = useState(document.body.scrollHeight);
+  const { pokemonDetails, togglePokemonFavorite } = usePokedex();
 
   const pokemonOfficialSprite = pokemonDetails.data.sprites.other["official-artwork"].front_default;
   const pokemonHomeSprite = pokemonDetails.data.sprites.other.home.front_default;
@@ -51,6 +52,11 @@ export function Pokemon() {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
+  useEffect(() => {
+    setScreenScrollHeight(document.body.scrollHeight);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, morePokemonData, document.body.scrollHeight, document.body.scrollWidth]);
 
   const animateBackground = useSpring({
     from: { background: '#F6F8FC' },
