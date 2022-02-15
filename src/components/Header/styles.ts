@@ -130,7 +130,7 @@ export const Container = styled.div`
   }
 
   @media (max-width: 640px) {
-    padding-top: 9rem;
+    padding-top: 8rem;
 
     .navbar {
       display: block;
