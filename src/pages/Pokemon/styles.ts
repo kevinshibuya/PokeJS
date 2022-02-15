@@ -18,6 +18,22 @@ export const Container = styled.div<ContainerProps>`
 
   div.title-wrapper {
     position: relative;
+
+    a {
+      color: #fff;
+      font-size: 1rem;
+      text-decoration: none;
+      display: flex;
+      text-shadow: 0 1px 15px rgb(0 0 0 / 20%);
+
+      img {
+        height: 20px;
+        width: 20px;
+        margin-left: 8px;
+        margin-top: -1px;
+      }
+    }
+
   }
 
   .pokemon-id {
@@ -191,7 +207,21 @@ export const Container = styled.div<ContainerProps>`
   }
 
   
-  @media(max-width: 674px) {
+  @media(max-width: 870px) {
+    .wrapper {
+      flex-direction: column;
+
+      .pokemon-landing {
+        margin: 1rem 0;
+        width: 90%;
+
+        .img {
+          img {
+            min-width: 300px;
+          }
+        }
+      }
+    }
   }
 `
 

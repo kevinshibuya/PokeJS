@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePalette } from 'react-palette';
-import { animated, easings, useSpring, config } from 'react-spring';
+import { animated, useSpring, config } from 'react-spring';
 
 import { usePokedex } from "../../hooks/usePokedex";
 import { api } from "../../services/api";
@@ -10,6 +10,7 @@ import { PokemonAbility } from "../../components/PokemonAbility"
 import { StrenghtsAndWeaknesses } from "../../components/StrengthsAndWeaknesses";
 
 import { Container, Types, PokemonStats } from "./styles";
+import returnSvg from "../../assets/return.svg";
 
 interface MorePokemonData {
   flavorTextEntry: string;
@@ -61,20 +62,21 @@ export function Pokemon() {
     delay: 250,
     config: {...config.gentle}
   });
-  
-  const animateEnterLeft = useSpring({
-    from: { marginLeft: '-100%', opacity: 0 },
-    to: { marginLeft: '0%', opacity: 1 },
-    delay: 750,
-    config: {...config.gentle}
-  });
-  
+
   const animateEnterRight = useSpring({
-    from: { marginRight: '-100%', opacity: 0 },
+    from: { marginRight: '-50%', opacity: 0 },
     to: { marginRight: '0%', opacity: 1 },
     delay: 500,
     config: {...config.gentle}
   });
+  
+  const animateEnterLeft = useSpring({
+    from: { marginLeft: '-50%', opacity: 0 },
+    to: { marginLeft: '0%', opacity: 1 },
+    delay: 500,
+    config: {...config.gentle}
+  });
+  
 
   const pokeStatsTitles = [
     {
@@ -131,7 +133,11 @@ export function Pokemon() {
         <Container screenScrollHeight={screenScrollHeight}>
           <animated.div style={animateBackground} className="background-wrapper"></animated.div>
           <animated.div style={animateOpacity} className="title-wrapper">
-            <NavLink to="/">return</NavLink>
+            <NavLink to="/">
+              Return 
+              <img src={returnSvg} alt="return icon" />
+
+            </NavLink>
             <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
             <h1 className="pokemon-name">{pokemonDetails.name}</h1>
           </animated.div>
@@ -145,7 +151,7 @@ export function Pokemon() {
             <animated.div style={animateEnterRight} className="pokemon-details">
               <div className="pokemon-genus pokemon-wrapper">
                 <h1 className="title">
-                  {morePokemonData.genera}
+                  {morePokemonData.genera ? morePokemonData.genera : 'POKÉMON'}
                 </h1>
                 <div className="types">
                   {pokemonDetails.types.map(type => {
