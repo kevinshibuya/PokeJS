@@ -1,5 +1,6 @@
 export type PokemonData = {
   isLoading: boolean;
+  isFavorite: boolean;
   data: {
     name: string;
     id: number;

@@ -130,7 +130,7 @@ export function StrenghtsAndWeaknesses() {
   useEffect(() => {
     async function fetchData() {
       // get all the types data based on the pokemon types
-      const allData = pokemonDetails.types.map(pokemonType => {
+      const allData = pokemonDetails.data.types.map(pokemonType => {
         return typeChart[typeChart.findIndex(type => type.name === pokemonType.type.name)]
       });
 
@@ -233,52 +233,58 @@ export function StrenghtsAndWeaknesses() {
     <>
       {Object.keys(weaknessesAndStrengths).length === 0 ? '' :
         <Container>
-          <div className="strenghts">
-            <h1 className="title">
-              Strenghts
-            </h1>
-            {weaknessesAndStrengths.strenghts.length !== 0 ?
-              <div className="content first">
-                <div className="title type-icon">1/2x</div>
-                {weaknessesAndStrengths.strenghts.map(strenght => {
-                  return (
-                    <TypeIcon className="type-icon" typeName={strenght} />
-                  )
-                })}
-              </div> : ''}
-            {weaknessesAndStrengths.superStrengths.length !== 0 ?
-              <div className="content">
-                <div className="title type-icon">1/4x</div>
-                {weaknessesAndStrengths.superStrengths.map(strenght => {
-                  return (
-                    <TypeIcon className="type-icon" typeName={strenght} />
-                  )
-                })}
-              </div> : ''}
-          </div>
-          <div className="weaknesses">
-            <h1 className="title">
-              Weaknesses
-            </h1>
-            {weaknessesAndStrengths.weaknesses.length !== 0 ?
-              <div className="content first">
-                <div className="title type-icon">2x</div>
-                {weaknessesAndStrengths.weaknesses.map(strenght => {
-                  return (
-                    <TypeIcon className="type-icon" typeName={strenght} />
-                  )
-                })}
-              </div> : ''}
-            {weaknessesAndStrengths.superWeaknesses.length !== 0 ?
-              <div className="content first">
-                <div className="title type-icon">4x</div>
-                {weaknessesAndStrengths.superWeaknesses.map(strenght => {
-                  return (
-                    <TypeIcon className="type-icon" typeName={strenght} />
-                  )
-                })}
-              </div> : ''}
-          </div>
+          {
+            weaknessesAndStrengths.strenghts.length === 0 && weaknessesAndStrengths.superStrengths.length === 0 ? '' :
+              <div className="strenghts">
+                <h1 className="title">
+                  Strenghts
+                </h1>
+                {weaknessesAndStrengths.strenghts.length !== 0 ?
+                  <div className="content first">
+                    <div className="title type-icon">1/2x</div>
+                    {weaknessesAndStrengths.strenghts.map(strenght => {
+                      return (
+                        <TypeIcon className="type-icon" typeName={strenght} />
+                      )
+                    })}
+                  </div> : ''}
+                {weaknessesAndStrengths.superStrengths.length !== 0 ?
+                  <div className="content">
+                    <div className="title type-icon">1/4x</div>
+                    {weaknessesAndStrengths.superStrengths.map(strenght => {
+                      return (
+                        <TypeIcon className="type-icon" typeName={strenght} />
+                      )
+                    })}
+                  </div> : ''}
+              </div>
+          }
+          {
+            weaknessesAndStrengths.weaknesses.length === 0 && weaknessesAndStrengths.superWeaknesses.length === 0 ? '' :
+              <div className="weaknesses">
+                <h1 className="title">
+                  Weaknesses
+                </h1>
+                {weaknessesAndStrengths.weaknesses.length !== 0 ?
+                  <div className="content first">
+                    <div className="title type-icon">2x</div>
+                    {weaknessesAndStrengths.weaknesses.map(strenght => {
+                      return (
+                        <TypeIcon className="type-icon" typeName={strenght} />
+                      )
+                    })}
+                  </div> : ''}
+                {weaknessesAndStrengths.superWeaknesses.length !== 0 ?
+                  <div className="content first">
+                    <div className="title type-icon">4x</div>
+                    {weaknessesAndStrengths.superWeaknesses.map(strenght => {
+                      return (
+                        <TypeIcon className="type-icon" typeName={strenght} />
+                      )
+                    })}
+                  </div> : ''}
+              </div>
+          }
           {weaknessesAndStrengths.immune.length !== 0 ?
             <div className="immune">
               <h1 className="title">

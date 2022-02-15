@@ -50,6 +50,13 @@ export const Container = styled.div`
           margin-left: -0.3rem;
           margin-right: 0.3rem;
         }
+
+        &.favorites {
+          height: 2.4rem;
+          margin: 0.3rem;
+          margin-left: -0.3rem;
+          margin-right: 0.7rem;
+        }
       }
 
       &:hover {

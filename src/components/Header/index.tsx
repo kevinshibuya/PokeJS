@@ -5,10 +5,11 @@ import { usePokedex } from "../../hooks/usePokedex";
 import pokeball from '../../assets/pokeball.svg';
 import about from '../../assets/about.svg';
 import pikachu from '../../assets/pikachu.svg';
+import favorite from '../../assets/star.png';
 import { Container } from "./styles";
 
 export function Header() {
-  const { pokemonDetails } = usePokedex();
+  const { pokemonDetails, favoritePokemondData } = usePokedex();
 
   return (
     <Container>
@@ -22,6 +23,13 @@ export function Header() {
             : <NavLink className={({ isActive }) => isActive ? "active" : "not-active"} to="/pokemon">
                 <img className="pokemon" src={pikachu} alt="pokedex" />
                 <p>Pokemon</p>
+              </NavLink>
+        }
+        { favoritePokemondData.length === 0 
+            ? '' 
+            : <NavLink className={({ isActive }) => isActive ? "active" : "not-active"} to="/favorites">
+                <img className="favorites" src={favorite} alt="pokedex" />
+                <p>Favorites</p>
               </NavLink>
         }
         <NavLink className={({ isActive }) => isActive ? "active" : "not-active"} to="/about">

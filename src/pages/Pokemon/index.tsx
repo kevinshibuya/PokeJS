@@ -11,6 +11,8 @@ import { StrenghtsAndWeaknesses } from "../../components/StrengthsAndWeaknesses"
 
 import { Container, Types, PokemonStats } from "./styles";
 import returnSvg from "../../assets/return.svg";
+import isFavorite from "../../assets/filled-star.png";
+import notFavorite from "../../assets/empty-star.png";
 
 interface MorePokemonData {
   flavorTextEntry: string;
@@ -21,16 +23,16 @@ interface MorePokemonData {
 
 export function Pokemon() {
   const [morePokemonData, setMorePokemonData] = useState<MorePokemonData>({} as MorePokemonData);
-  const { pokemonDetails, screenScrollHeight } = usePokedex();
+  const { pokemonDetails, screenScrollHeight, togglePokemonFavorite } = usePokedex();
 
-  const pokemonOfficialSprite = pokemonDetails.sprites.other["official-artwork"].front_default;
-  const pokemonHomeSprite = pokemonDetails.sprites.other.home.front_default;
+  const pokemonOfficialSprite = pokemonDetails.data.sprites.other["official-artwork"].front_default;
+  const pokemonHomeSprite = pokemonDetails.data.sprites.other.home.front_default;
   const { data, loading } = usePalette(pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite);
 
 
   useEffect(() => {
     async function fetchData() {
-      const morePokemonData = await api.get(pokemonDetails.species.url)
+      const morePokemonData = await api.get(pokemonDetails.data.species.url)
         .then(data => {
           return {
             flavor_text_entries: data.data.flavor_text_entries,
@@ -109,7 +111,7 @@ export function Pokemon() {
     }
   ]
 
-  const statsTotal = pokemonDetails.stats.reduce((acc, cur) => {
+  const statsTotal = pokemonDetails.data.stats.reduce((acc, cur) => {
     return {
       base_stat: acc.base_stat + cur.base_stat,
       stat: {
@@ -136,16 +138,18 @@ export function Pokemon() {
             <NavLink to="/">
               Return 
               <img src={returnSvg} alt="return icon" />
-
             </NavLink>
-            <h1 className="pokemon-id">#{pokemonDetails.id}</h1>
-            <h1 className="pokemon-name">{pokemonDetails.name}</h1>
+            <h1 className="pokemon-id">#{pokemonDetails.data.id}</h1>
+            <h1 className="pokemon-name">{pokemonDetails.data.name}</h1>
           </animated.div>
           <div className="wrapper">
             <animated.div style={animateEnterLeft} className="pokemon-landing">
               <div className="img official-artwork">
                 <h1 className="pokemon-name japanese">{morePokemonData.japaneseName}</h1>
-                <img src={pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite} alt={pokemonDetails.name} />
+                <button className="favorite" onClick={() => togglePokemonFavorite(pokemonDetails)}>
+                  <img src={pokemonDetails.isFavorite ? isFavorite : notFavorite} alt="favorite icon" />
+                </button>
+                <img src={pokemonOfficialSprite ? pokemonOfficialSprite : pokemonHomeSprite} alt={pokemonDetails.data.name} />
               </div>
             </animated.div>
             <animated.div style={animateEnterRight} className="pokemon-details">
@@ -154,7 +158,7 @@ export function Pokemon() {
                   {morePokemonData.genera ? morePokemonData.genera : 'POKÉMON'}
                 </h1>
                 <div className="types">
-                  {pokemonDetails.types.map(type => {
+                  {pokemonDetails.data.types.map(type => {
                     return (
                       <Types key={type.type.name} className={`type ` + type.type.name} type={type.type.name}>{type.type.name.toUpperCase()}</Types>
                     )
@@ -174,7 +178,7 @@ export function Pokemon() {
                   Abilities
                 </h1>
                 <div className="content">
-                  {pokemonDetails.abilities.map(ability => {
+                  {pokemonDetails.data.abilities.map(ability => {
                     return (
                       <PokemonAbility key={ability.ability.name} ability={ability} />
                     )
@@ -187,7 +191,7 @@ export function Pokemon() {
                     Height
                   </h1>
                   <div className="content">
-                    {formatData(pokemonDetails.height.toString())}m
+                    {formatData(pokemonDetails.data.height.toString())}m
                   </div>
                 </div>
                 <div className="weight">
@@ -195,7 +199,7 @@ export function Pokemon() {
                     Weight
                   </h1>
                   <div className="content">
-                    {formatData(pokemonDetails.weight.toString())}kg
+                    {formatData(pokemonDetails.data.weight.toString())}kg
                   </div>
                 </div>
               </div>
@@ -207,7 +211,7 @@ export function Pokemon() {
                   Stats
                 </h1>
                 <div className="content">
-                  {pokemonDetails.stats.map((stat, index) => {
+                  {pokemonDetails.data.stats.map((stat, index) => {
                     return (
                       <PokemonStats key={stat.stat.name} className="stat" statName={pokeStatsTitles[index]}>
                         <div className="stat-title">

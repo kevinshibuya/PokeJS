@@ -31,6 +31,7 @@ export const Container = styled.div<ContainerProps>`
         width: 20px;
         margin-left: 8px;
         margin-top: -1px;
+        filter: drop-shadow(0px 2px 15px rgb(0 0 0 / 0.2));
       }
     }
 
@@ -86,6 +87,22 @@ export const Container = styled.div<ContainerProps>`
       justify-content: center;
       position: relative;
       width: 100%;
+
+      .favorite {
+        background: none;
+        border: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        z-index: 10;
+
+        img {
+          width: 40px;
+          height: 40px;
+          min-width: 0px;
+        }
+      }
 
       img {
         width: 90%;
@@ -216,6 +233,10 @@ export const Container = styled.div<ContainerProps>`
         width: 90%;
 
         .img {
+          .japanese {
+            font-size: 4rem;
+          }
+
           img {
             min-width: 300px;
           }

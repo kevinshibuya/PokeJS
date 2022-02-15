@@ -73,6 +73,7 @@ export function Pokedex() {
           .then(data => {
             return {
               isLoading: false,
+              isFavorite: false,
               data: data.data
             }
           })
@@ -204,7 +205,7 @@ export function Pokedex() {
       <div className="cards">
         {isLoading ? undefined : data.map(data => {
           return (
-            <Cards key={data.data.id} pokemonData={data.data}></Cards>
+            <Cards key={data.data.id} pokemonData={data}></Cards>
           )
         })}
       </div>

@@ -28,8 +28,8 @@ export function PokemonAbility({ ability }: PokemonAbilityProps) {
     async function fetchData() {
       const pokemonAbilitiesDetails = [];
 
-      for (let i = 0; i < pokemonDetails.abilities.length; i++) {
-        pokemonAbilitiesDetails.push(await api.get(pokemonDetails.abilities[i].ability.url)
+      for (let i = 0; i < pokemonDetails.data.abilities.length; i++) {
+        pokemonAbilitiesDetails.push(await api.get(pokemonDetails.data.abilities[i].ability.url)
           .then((data) => {
             return {
               name: data.data.name,
