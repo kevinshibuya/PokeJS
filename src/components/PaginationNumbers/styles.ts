@@ -57,7 +57,11 @@ export const Container = styled.div`
     }
   }
 
-  @media (max-width: 440px) {
+  @media (max-width: 550px) {
+    .previous-button {
+      border-radius: 0.5rem 0rem 0rem 0.5rem;
+    }
+
     .next-button {
       border-right: 0rem;
       border-radius: 0rem 0.5rem 0.5rem 0rem;
@@ -68,6 +72,12 @@ export const Container = styled.div`
     }
     .hide-button {
       display: none;
+    }
+  }
+
+  @media (max-width: 440px) {
+    button {
+      font-size: 0.7rem;
     }
   }
 `

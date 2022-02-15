@@ -82,7 +82,7 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
     setIsLoading(true);
     setPageNumbers({
       first: pageNumber,
-      last: pageNumber + 5 > pageAmount ? pageAmount + 1 : pageNumber + 5
+      last: pageNumber + 5 > pageAmount ? pageAmount : pageNumber + 4
     });
   }
 
@@ -90,7 +90,7 @@ export function PaginationNumbers({ pageAmount, search }: PaginationNumbersProps
     <Container>
       <div>
         <button className="hide-button" onClick={() => changePage('first')}>First</button>
-        <button onClick={() => changePage('prev')}>{`<<`}</button>
+        <button className="previous-button" onClick={() => changePage('prev')}>{`<<`}</button>
         {pageArray.map(page => {
           return (
             <PageButton key={page} onClick={() => goToPageNumber(page)}>{page}</PageButton>

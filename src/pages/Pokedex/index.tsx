@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import debounce from 'lodash.debounce';
+import Modal from 'react-modal';
 
 import { Cards } from "../../components/Cards";
 import { LoadingIndicator } from '../../components/LoadingIndicator';
@@ -12,6 +13,7 @@ import { Container } from "./styles"
 import desc from '../../assets/descending.png';
 import asc from '../../assets/ascending.png';
 import dft from '../../assets/default.png';
+import * as AiIcons from "react-icons/ai";
 
 interface PaginationData {
   count: number;
@@ -20,8 +22,19 @@ interface PaginationData {
   results: { name: string; url: string; }[];
 }
 
+Modal.setAppElement('#root');
+
 export function Pokedex() {
   const [pageAmount, setPageAmount] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(() => {
+    const storagedDisclaimer = localStorage.getItem('@PokeJS:disclaimer');
+
+    if (storagedDisclaimer) {
+      return JSON.parse(storagedDisclaimer);
+    }
+
+    return true;
+  });
 
   const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers, orderByValue, setOrderByValue, paginationData, setPaginationData } = usePokedex();
 
@@ -46,7 +59,7 @@ export function Pokedex() {
 
     fetchData();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function searchFilter(value: { name: string; url: string; }) {
@@ -88,7 +101,7 @@ export function Pokedex() {
     }
 
     fetchPokemonData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, paginationData, cardAmount, pageNumbers]);
 
   function changeSearch(event: any) {
@@ -100,7 +113,7 @@ export function Pokedex() {
 
   const debounceChangeSearch = useMemo(() => {
     return debounce(changeSearch, 300);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const options = [
@@ -160,7 +173,7 @@ export function Pokedex() {
     }
 
     handleOrderChange()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderByValue]);
 
   function handleOrderBy(filter: string) {
@@ -179,8 +192,26 @@ export function Pokedex() {
     setOrderByValue(nextOrderValue);
   }
 
+  function closeDisclaimer() {
+    setModalIsOpen(false);
+    localStorage.setItem('@PokeJS:disclaimer', JSON.stringify(false));
+  }
+
   return (
     <Container>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeDisclaimer}
+        overlayClassName="disclaimer-modal-overlay"
+        className="disclaimer-modal"
+        contentLabel="Disclaimer"
+      >
+        <div className="disclaimer-title">
+          <h1>Disclaimer</h1>
+          <AiIcons.AiOutlineCloseCircle onClick={closeDisclaimer}/>
+        </div>
+        <p>This project was made using PokeAPI, which is a really good service, but even then you may find some missing or incorrect information.</p>
+      </Modal>
       <div className="search-bar">
         <input
           type="text"
@@ -194,7 +225,7 @@ export function Pokedex() {
               return <img key={option.name} src={asc} alt="Ascending" />
             } else if (option.value === orderByValue && option.value === 'desc') {
               return <img key={option.name} src={desc} alt="Descending" />
-            }else if (option.value === orderByValue && option.value === 'dft') {
+            } else if (option.value === orderByValue && option.value === 'dft') {
               return <img key={option.name} src={dft} alt="Default" />
             }
             return undefined;

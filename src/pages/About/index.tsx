@@ -13,6 +13,7 @@ export function About() {
         <li><span>React Palette:</span> Used to make the background color of the pokemon page change, based on the most vibrant color of the pokemon image.</li>
         <li><span>React Router Dom:</span> Did all the application routing.</li>
         <li><span>React Spring:</span> Animation library, used on the pokemon page.</li>
+        <li><span>React Modal:</span> Used to make the disclaimer when you first load the project.</li>
         <li><span>Styled Components:</span> Really good library to integrate styling with the code.</li>
       </ul>
       <h1>The Design</h1>

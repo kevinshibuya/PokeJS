@@ -97,4 +97,41 @@ export const GlobalStyle = createGlobalStyle`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  .disclaimer-modal-overlay {
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+
+  .disclaimer-modal {
+    inset: 50% auto auto 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    position: absolute;
+    border-radius: 1.8rem;
+    background: rgb(255, 255, 255);
+    overflow: auto;
+    outline: none;
+    padding: 2rem;
+
+    .disclaimer-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      svg {
+        font-size: 2rem;
+        cursor: pointer;
+      }
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
 `
