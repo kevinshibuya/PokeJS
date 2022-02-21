@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   div.search-bar {
+    position: relative;
     margin-bottom: 4rem;
 
     input {
@@ -21,6 +22,15 @@ export const Container = styled.div`
         font-size: 1rem;
         color: #8c8c8c;
       }
+    }
+
+    .clear-search {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 28px;
+      right: 22px;
+      cursor: pointer;
     }
   }
   

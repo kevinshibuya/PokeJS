@@ -36,7 +36,7 @@ export function Pokedex() {
     return true;
   });
 
-  const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers, orderByValue, setOrderByValue, paginationData, setPaginationData } = usePokedex();
+  const { isLoading, setIsLoading, data, setData, cardAmount, search, setSearch, pageNumbers, setPageNumbers, orderByValue, setOrderByValue, paginationData, setPaginationData } = usePokedex();
 
   useEffect(() => {
     async function fetchData() {
@@ -106,7 +106,7 @@ export function Pokedex() {
 
   function changeSearch(event: any) {
     setIsLoading(true);
-    setSearch(event.target.value);
+    setSearch(event.target.value.toLowerCase());
 
     return search;
   }
@@ -115,6 +115,16 @@ export function Pokedex() {
     return debounce(changeSearch, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function clearSearch() {
+    setIsLoading(true);
+    (document.getElementById('searchBar') as HTMLInputElement).value = '';
+    setSearch('');
+    setPageNumbers({
+      first: 1,
+      last: 5,
+    });
+  }
 
   const options = [
     {
@@ -208,16 +218,18 @@ export function Pokedex() {
       >
         <div className="note-title">
           <h1>Note</h1>
-          <AiIcons.AiOutlineCloseCircle onClick={closeNote}/>
+          <AiIcons.AiOutlineCloseCircle onClick={closeNote} />
         </div>
         <p>This project was made using PokeAPI, which is a really good service, but even then you may find some missing or incorrect information.</p>
       </Modal>
       <div className="search-bar">
         <input
+          id="searchBar"
           type="text"
           placeholder={search ? search : "Search your Pokemon!"}
           onChange={debounceChangeSearch}
         />
+        <AiIcons.AiOutlineClose className="clear-search" style={{ visibility: search ? "visible" : "hidden" }} onClick={clearSearch} />
         <button className="order-by" onClick={() => handleOrderBy(orderByValue)}>
           {options[options.findIndex((option) => { return option.value === orderByValue; })].name}
           {options.map(option => {
