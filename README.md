@@ -7,10 +7,8 @@
 </p>
 
 
-This project was made to solidify what I learned on chapters I and II of the [Rocketseat ReactJS Ignite course](https://www.rocketseat.com.br/ignite).
-
-A live version can be found [here](https://shibuya-pokejs.netlify.app/).
-
+This project was made to solidify what I learned on chapters I and II of the [Rocketseat ReactJS Ignite course](https://www.rocketseat.com.br/ignite).  
+A live version can be found [here](https://shibuya-pokejs.netlify.app/).  
 Project powered by [PokeAPI](https://pokeapi.co/).
 
 ## 🚀 Features
