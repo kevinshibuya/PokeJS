@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# PokeJS
+## _A "Pokemon inspired" ReactJS project_
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c89d3548-c676-4af9-9dfc-d443b9bb4b2d/deploy-status)](https://app.netlify.com/sites/shibuya-pokejs/deploys)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img src="https://media3.giphy.com/media/KCjXOlWn84bhx8HnSX/giphy.gif?cid=790b76117ab8b82e1a41a08992a3d0a9d71c1a25a4990c1e&rid=giphy.gif&ct=g" alt="PokeJS Gif"/>
+</p>
 
-## Available Scripts
+This project was made to solidify what I learned on chapters I and II of the [Rocketseat ReactJS Ignite course](https://www.rocketseat.com.br/ignite).
+A live version can be found [here](https://shibuya-pokejs.netlify.app/).
+Project powered by [PokeAPI](https://pokeapi.co/).
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `yarn start`
+- All the data from the Pokemons available on PokeAPI
+- Searchbar and order by systems
+- Pagination system
+- Detailed view of each individual Pokemon
+- Add/remove Pokemon to/from your Favorites
+- Fully responsive
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 💻 Tech
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+PokeJS uses a number of open source projects to work properly:
 
-### `yarn test`
+- **ReactJS + Typescript** - The foundation
+- **React Icons** - Yeah, icons
+- **React Palette** - Used to make the background color of the pokemon page change, based on the most vibrant color of the pokemon image
+- **React Router Dom** - Did all the application routing
+- **React Spring** - Animation library, used on the pokemon page
+- **React Modal** - Used to make the note when you first load the project
+- **Styled Components** - Really great library for styling on ReactJS applications
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+And of course PokeJS itself is open source with a [public repository](https://github.com/kevinshibuya/PokeJS) on GitHub.
 
-### `yarn build`
+## 🎨 Design
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Since I am just a programmer, this project design was based on the works of [AC1design](https://dribbble.com/AC1design) -  [Pokedex Website Redesign Concept](https://dribbble.com/shots/15128634-Pokemon-Pokedex-Website-Redesign-Concept).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📝 License
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+MIT
