@@ -26,4 +26,18 @@ export const Container = styled.div`
   li, p {
     font-size: 1.1rem;
   }
+
+  .contact {
+    li {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+    }
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-right: 5px;
+    }
+  }
 `
