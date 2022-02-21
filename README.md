@@ -6,15 +6,12 @@
   <img src="https://media3.giphy.com/media/KCjXOlWn84bhx8HnSX/giphy.gif?cid=790b76117ab8b82e1a41a08992a3d0a9d71c1a25a4990c1e&rid=giphy.gif&ct=g" alt="PokeJS Gif"/>
 </p>
 
-<p>
+
 This project was made to solidify what I learned on chapters I and II of the [Rocketseat ReactJS Ignite course](https://www.rocketseat.com.br/ignite).
-</p>
-<p>
+
 A live version can be found [here](https://shibuya-pokejs.netlify.app/).
-</p>
-<p>
+
 Project powered by [PokeAPI](https://pokeapi.co/).
-</p>
 
 ## 🚀 Features
 
